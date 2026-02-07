@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /_next/
+Disallow: /monitoring
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://resources.clevers.co.ke/sitemap.xml
