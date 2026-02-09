@@ -57,14 +57,12 @@ export default function Grade8Plan() {
 
     // Replace these with your Google Drive folder IDs
     const folderIds = useMemo(() => [
-        '1dAjYXuGpHAxFrLnAf86UbN6qv_WTs2jk', // First folder
-        '1BE0yOZWP86T4_eRI7ddnaf2PAN5ERBnT'          // Second folder
+        '19y8JMQcn8gW7mHWc9nQINT8evPyOj8dI',
     ], []);
 
     // Add folder names mapping
     const folderNames: { [key: string]: string } = {
-        '1dAjYXuGpHAxFrLnAf86UbN6qv_WTs2jk': 'Grade 8 Lesson Plans',
-        '1BE0yOZWP86T4_eRI7ddnaf2PAN5ERBnT': 'Additional Lesson Plans'
+        '19y8JMQcn8gW7mHWc9nQINT8evPyOj8dI': 'Grade 8 Lesson Plans',
     };
 
     useEffect(() => {

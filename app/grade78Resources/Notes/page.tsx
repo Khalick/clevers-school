@@ -59,7 +59,7 @@ export default function Grade1To6RevisionNotes() {
     // Assignment folder IDs and names
     const folderNames: { [key: string]: string } = useMemo(() => ({
         '13cvkDMqzdU2RLzxQwObkeOumz4a8KhbH': 'Grade 7',
-       
+        '1l38ixoU5NhSjUKXRd8LCtOjwKbP5-ZwQ': 'Grade 8',
     }), []);
 
     const folderIds = Object.keys(folderNames);
@@ -124,7 +124,7 @@ export default function Grade1To6RevisionNotes() {
                     <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center md:text-left font-bold">
-                               GRADE 7 AND 8 REVISION NOTES
+                                GRADE 7 AND 8 REVISION NOTES
                             </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

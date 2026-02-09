@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 // Constants
-const FOLDER_ID = '1jlzgR5FLUkgWeuHoa7kjMWt9LJ6GdaSP';
+const FOLDER_ID = '1YfFz6SZFg39BY89WJ8bcznoUd2gFZa1V';
 const API_ENDPOINT = '/api/drive/files';
 
 // Types
@@ -76,10 +76,10 @@ const LoadingSpinner = () => (
 );
 
 const SearchBar = ({
-                       value,
-                       onChange,
-                       onClear
-                   }: {
+    value,
+    onChange,
+    onClear
+}: {
     value: string;
     onChange: (value: string) => void;
     onClear: () => void;
@@ -214,7 +214,7 @@ export default function Grade8Schemes() {
                                              md:justify-between p-4 md:p-6 border-b border-gray-700">
                             <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center
                                                 md:text-left font-bold">
-                               GRADE 8 SCHEMES OF WORK
+                                GRADE 8 SCHEMES OF WORK
                             </CardTitle>
                             <SearchBar
                                 value={searchQuery}
