@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
 
 import { authOptions } from '@/auth';
+import { getUserSubscription } from '@/lib/subscription';
 
 // Create a single Drive client instance (module-level caching)
 let driveClient: ReturnType<typeof google.drive> | null = null;
@@ -33,6 +34,12 @@ export async function GET(
         const session = await getServerSession(authOptions);
         if (!session?.user) {
             return new Response('Unauthorized', { status: 401 });
+        }
+
+        // Check for active subscription
+        const subscription = await getUserSubscription(session.user.id);
+        if (!subscription) {
+            return new Response('Payment Required: Premium subscription needed', { status: 402 });
         }
 
         // In Next.js 15+, params must be awaited
