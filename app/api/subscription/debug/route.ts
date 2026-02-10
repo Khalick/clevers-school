@@ -1,11 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { connectToDatabase } from "@/lib/mongodb"
+import { authOptions } from "@/auth"
 
 export async function GET(request: NextRequest) {
   try {
     // Get the current user session
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
 
     if (!session?.user?.email?.includes("admin")) {
       return NextResponse.json(

@@ -57,12 +57,12 @@ export default function Grade1To6RevisionNotes() {
     const router = useRouter();
 
     // Assignment folder IDs and names
-    const folderNames: { [key: string]: string } = useMemo(() => ({
+    const folderNames = useMemo<{ [key: string]: string }>(() => ({
         '13cvkDMqzdU2RLzxQwObkeOumz4a8KhbH': 'Grade 7',
         '1l38ixoU5NhSjUKXRd8LCtOjwKbP5-ZwQ': 'Grade 8',
     }), []);
 
-    const folderIds = Object.keys(folderNames);
+    const folderIds = useMemo(() => Object.keys(folderNames), [folderNames]);
 
     useEffect(() => {
         const fetchFiles = async () => {

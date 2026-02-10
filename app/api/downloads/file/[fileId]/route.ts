@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
 import { cache } from 'react';
 
+import { authOptions } from '@/auth';
+
 // Cache the Google Drive client initialization
 const getDriveClient = cache(async () => {
     const auth = new google.auth.GoogleAuth({
@@ -26,7 +28,7 @@ export async function GET(
 ) {
     try {
         // Early auth check before any Google API calls
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
         if (!session?.user) {
             return new Response('Unauthorized', { status: 401 });
         }
@@ -37,7 +39,7 @@ export async function GET(
         // Check cache for file metadata
         const cachedMetadata = metadataCache.get(fileId);
         const now = Date.now();
-        
+
         let fileMetadata;
         if (cachedMetadata && (now - cachedMetadata.timestamp) < METADATA_CACHE_TIME) {
             fileMetadata = cachedMetadata.data;
@@ -47,11 +49,11 @@ export async function GET(
                 fileId: fileId,
                 fields: 'name, mimeType, size',
             });
-            
+
             if (!file.data) {
                 return new Response('File not found', { status: 404 });
             }
-            
+
             fileMetadata = file.data;
             metadataCache.set(fileId, {
                 data: fileMetadata,
@@ -80,7 +82,7 @@ export async function GET(
                             fileId: fileId,
                             alt: 'media',
                         },
-                        { 
+                        {
                             responseType: 'stream',
                             // Set higher timeout for large files
                             timeout: 30000,
@@ -88,10 +90,10 @@ export async function GET(
                     );
 
                     let buffer = Buffer.alloc(0);
-                    
+
                     response.data.on('data', (chunk: Buffer) => {
                         buffer = Buffer.concat([buffer, chunk]);
-                        
+
                         // Enqueue when we have enough data
                         while (buffer.length >= CHUNK_SIZE) {
                             controller.enqueue(buffer.slice(0, CHUNK_SIZE));
