@@ -7,12 +7,15 @@ const protectedRoutes = ["/subscribe", "/subscription", "/profile"]
 // Routes that should redirect to dashboard if user is authenticated
 const authRoutes = ["/auth/signin", "/auth/signup"]
 
+const ADMIN_EMAILS = ["peteragak61@gmail.com"]
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Check if the route is protected
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route))
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route))
+  const isAdminRoute = pathname.startsWith("/admin")
 
   try {
     // Get the token
@@ -20,6 +23,19 @@ export async function middleware(request: NextRequest) {
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
     })
+
+    // Protect Admin Routes
+    if (isAdminRoute) {
+      if (!token) {
+        const url = new URL("/auth/signin", request.url)
+        url.searchParams.set("callbackUrl", pathname)
+        return NextResponse.redirect(url)
+      }
+
+      if (!token.email || !ADMIN_EMAILS.includes(token.email)) {
+        return NextResponse.redirect(new URL("/", request.url))
+      }
+    }
 
     // Redirect to login if accessing protected route without authentication
     if (isProtectedRoute && !token) {
@@ -47,6 +63,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/subscribe/:path*", "/subscription/:path*", "/profile/:path*", "/auth/:path*"],
+  matcher: ["/subscribe/:path*", "/subscription/:path*", "/profile/:path*", "/auth/:path*", "/admin/:path*"],
 }
 
