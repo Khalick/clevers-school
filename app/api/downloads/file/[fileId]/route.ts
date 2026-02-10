@@ -1,30 +1,32 @@
 import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
-import { cache } from 'react';
 
 import { authOptions } from '@/auth';
 
-// Cache the Google Drive client initialization
-const getDriveClient = cache(async () => {
-    const auth = new google.auth.GoogleAuth({
-        credentials: {
-            client_email: process.env.GOOGLE_CLIENT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-        },
-        scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-    });
-    return google.drive({ version: 'v3', auth });
-});
+// Create a single Drive client instance (module-level caching)
+let driveClient: ReturnType<typeof google.drive> | null = null;
+
+function getDriveClient() {
+    if (!driveClient) {
+        const auth = new google.auth.GoogleAuth({
+            credentials: {
+                client_email: process.env.GOOGLE_CLIENT_EMAIL,
+                private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+            },
+            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+        });
+        driveClient = google.drive({ version: 'v3', auth });
+    }
+    return driveClient;
+}
 
 // Constants for optimization
 const CHUNK_SIZE = 256 * 1024; // 256KB chunks for optimal streaming
-const METADATA_CACHE_TIME = 5 * 60 * 1000; // 5 minutes cache for file metadata
-const metadataCache = new Map();
 
 export async function GET(
     request: NextRequest,
-    context: { params: Record<string, string | string[]> }
+    context: { params: Promise<{ fileId: string }> }
 ) {
     try {
         // Early auth check before any Google API calls
@@ -33,18 +35,13 @@ export async function GET(
             return new Response('Unauthorized', { status: 401 });
         }
 
-        const fileId = context.params.fileId as string;
-        const drive = await getDriveClient();
+        // In Next.js 15+, params must be awaited
+        const { fileId } = await context.params;
+        const drive = getDriveClient();
 
-        // Check cache for file metadata
-        const cachedMetadata = metadataCache.get(fileId);
-        const now = Date.now();
-
+        // Fetch file metadata
         let fileMetadata;
-        if (cachedMetadata && (now - cachedMetadata.timestamp) < METADATA_CACHE_TIME) {
-            fileMetadata = cachedMetadata.data;
-        } else {
-            // Fetch fresh metadata
+        try {
             const file = await drive.files.get({
                 fileId: fileId,
                 fields: 'name, mimeType, size',
@@ -55,25 +52,27 @@ export async function GET(
             }
 
             fileMetadata = file.data;
-            metadataCache.set(fileId, {
-                data: fileMetadata,
-                timestamp: now
-            });
+        } catch (metaError: unknown) {
+            console.error('Failed to fetch file metadata:', metaError);
+            const errorMessage = metaError instanceof Error ? metaError.message : String(metaError);
+            if (errorMessage.includes('notFound') || errorMessage.includes('404')) {
+                return new Response('File not found', { status: 404 });
+            }
+            return new Response('Failed to access file', { status: 502 });
         }
 
-        // Set up headers with content length if available
+        // Set up headers
         const headers = new Headers({
             'Content-Type': fileMetadata.mimeType || 'application/octet-stream',
             'Content-Disposition': `attachment; filename="${encodeURIComponent(fileMetadata.name || 'download')}"`,
             'Cache-Control': 'public, max-age=3600',
-            'Transfer-Encoding': 'chunked'
         });
 
         if (fileMetadata.size) {
             headers.set('Content-Length', fileMetadata.size.toString());
         }
 
-        // Optimize streaming with larger chunks and parallel processing
+        // Stream the file content
         const stream = new ReadableStream({
             async start(controller) {
                 try {
@@ -84,8 +83,7 @@ export async function GET(
                         },
                         {
                             responseType: 'stream',
-                            // Set higher timeout for large files
-                            timeout: 30000,
+                            timeout: 60000, // 60s timeout for large files
                         }
                     );
 
@@ -96,7 +94,7 @@ export async function GET(
 
                         // Enqueue when we have enough data
                         while (buffer.length >= CHUNK_SIZE) {
-                            controller.enqueue(buffer.slice(0, CHUNK_SIZE));
+                            controller.enqueue(new Uint8Array(buffer.slice(0, CHUNK_SIZE)));
                             buffer = buffer.slice(CHUNK_SIZE);
                         }
                     });
@@ -104,7 +102,7 @@ export async function GET(
                     response.data.on('end', () => {
                         // Enqueue any remaining data
                         if (buffer.length > 0) {
-                            controller.enqueue(buffer);
+                            controller.enqueue(new Uint8Array(buffer));
                         }
                         controller.close();
                     });
@@ -119,7 +117,6 @@ export async function GET(
                 }
             },
             cancel() {
-                // Clean up resources if the download is cancelled
                 console.log('Download cancelled by client');
             }
         });
