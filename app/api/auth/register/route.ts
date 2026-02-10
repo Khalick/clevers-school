@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createUser } from "@/lib/auth"
 
+// Ensure this route always runs in Node.js runtime (needed for MongoDB + bcryptjs)
+export const runtime = 'nodejs'
+
 export async function POST(request: NextRequest) {
   try {
     const { name, email, password } = await request.json()
@@ -32,7 +35,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: error.message }, { status: 409 })
     }
 
-    return NextResponse.json({ message: "Failed to register user" }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : "Failed to register user"
+    return NextResponse.json({ message: errorMessage }, { status: 500 })
   }
 }
-
