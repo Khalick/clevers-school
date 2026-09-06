@@ -13,25 +13,25 @@ const Grade1to6ResourcesLayout = () => {
             </CardHeader>
             <CardContent className="p-6 flex flex-col ">
 
-                <Link href='/grade1to6Resources/curriculum' className='text-navbar text-center font-semibold font-serif text-2xl'>
+                <Link href='/grade1to6Resources/curriculum' className='text-navbar text-center font-semibold text-2xl'>
                 Curriculum Design Materials
                 </Link>
-                <Link href='/grade1to6Resources/grade1' className='text-navbar text-center font-semibold font-serif  text-2xl'>
+                <Link href='/grade1to6Resources/grade1' className='text-navbar text-center font-semibold  text-2xl'>
                 All Grade 1 Resources
                 </Link>
-                <Link href='/grade1to6Resources/grade2' className='text-navbar text-center font-semibold font-serif text-2xl'>
+                <Link href='/grade1to6Resources/grade2' className='text-navbar text-center font-semibold text-2xl'>
                 All Grade 2 Resources
                 </Link>
-                <Link href='/grade1to6Resources/grade3' className='text-navbar text-center font-semibold font-serif text-2xl'>
+                <Link href='/grade1to6Resources/grade3' className='text-navbar text-center font-semibold text-2xl'>
                 All Grade 3 Resources
                 </Link>
-                <Link href='/grade1to6Resources/grade4' className='text-navbar text-center font-semibold font-serif  text-2xl'>
+                <Link href='/grade1to6Resources/grade4' className='text-navbar text-center font-semibold  text-2xl'>
                 All Grade 4 Resources
                 </Link>
-                <Link href='/grade1to6Resources/grade5' className='text-navbar text-center font-semibold font-serif text-2xl'>
+                <Link href='/grade1to6Resources/grade5' className='text-navbar text-center font-semibold text-2xl'>
                 All Grade 5 Resources
                 </Link>
-                <Link href='/grade1to6Resources/grade6' className='text-navbar text-center font-semibold font-serif text-2xl'>
+                <Link href='/grade1to6Resources/grade6' className='text-navbar text-center font-semibold text-2xl'>
                 All Grade 6 Resources
                 </Link>
             </CardContent>

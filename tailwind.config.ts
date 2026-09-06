@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
     darkMode: ["class"],
@@ -10,9 +11,31 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			// app/components/Fonts.tsx already loads Geist and sets these CSS
+  			// variables on <body>. Without this mapping nothing consumed them,
+  			// so the woffs shipped on every page load and never rendered.
+  			sans: ['var(--font-geist-sans)', ...defaultTheme.fontFamily.sans],
+  			mono: ['var(--font-geist-mono)', ...defaultTheme.fontFamily.mono]
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
+  			brand: {
+  				'50': 'hsl(var(--brand-50))',
+  				'100': 'hsl(var(--brand-100))',
+  				'200': 'hsl(var(--brand-200))',
+  				'500': 'hsl(var(--brand-500))',
+  				'600': 'hsl(var(--brand-600))',
+  				'700': 'hsl(var(--brand-700))',
+  				'900': 'hsl(var(--brand-900))'
+  			},
+  			track: {
+  				cbc: 'hsl(var(--track-cbc))',
+  				kcse: 'hsl(var(--track-kcse))',
+  				igcse: 'hsl(var(--track-igcse))',
+  				college: 'hsl(var(--track-college))'
+  			},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'

@@ -162,7 +162,7 @@ const paid = true;
           <StructuredData />
         </head>
         <body 
-          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full bg-pink-100`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full bg-background text-foreground`}
         >
          
           <AppLayout>{children}</AppLayout>
