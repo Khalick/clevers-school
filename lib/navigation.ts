@@ -338,7 +338,11 @@ export interface Crumb {
 }
 
 export function crumbsForPath(pathname: string): Crumb[] {
-    const segments = pathname.split('/').filter(Boolean);
+    let segments = pathname.split('/').filter(Boolean);
+
+    // /document/<drive file id> — the id is not a label a reader can use, and
+    // the page itself shows the real filename as its <h1>.
+    if (segments[0] === 'document') segments = ['document'];
     const crumbs: Crumb[] = [];
     let href = '';
     for (const segment of segments) {

@@ -80,6 +80,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
     const track = trackForPath(pathname);
     const isHome = pathname === '/';
+    // /document/[name] renders its own <h1> from the real filename; the
+    // route-derived title there would just be a URL-encoded Drive file id.
+    const providesOwnTitle = isHome || pathname.startsWith('/document');
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
@@ -111,7 +114,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
                 <main className="w-full min-w-0 max-w-[880px] flex-1 py-6">
                     <SubscriptionBanner />
-                    {!isHome && (
+                    {!providesOwnTitle && (
                         <div className={`mb-5 border-l-4 pl-4 ${trackBorder[track]}`}>
                             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
                                 {titleForPath(pathname)}

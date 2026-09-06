@@ -1,405 +1,310 @@
-'use client';
+import React from 'react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import type { Metadata } from 'next';
+import {
+    ArrowRight,
+    GraduationCap,
+    BookOpen,
+    Globe2,
+    Library,
+    Check,
+    FileText,
+    ClipboardList,
+    PenSquare,
+    Presentation,
+    Trophy,
+} from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+
+export const metadata: Metadata = {
+    title: 'Clevers Schools Resources — Past papers, notes and schemes for Kenyan classrooms',
+    description:
+        'KCSE past papers and marking schemes, CBC notes and curriculum designs, IGCSE resources, revision booklets, topic tests, lesson plans and schemes of work — Grade 1 to Form 4 and college.',
+};
+
+/**
+ * Homepage.
+ *
+ * Replaces 404 lines that were a wall of ~85 ALL-CAPS, 14px, underlined serif
+ * links with no hero, no imagery, no cards and no CTA button — the only
+ * conversion moment was a bare text link. Every destination that worked before
+ * is still here; they are grouped, cased and given hierarchy.
+ *
+ * Two previously-broken links are corrected:
+ *   /cbc                        -> no page.tsx exists; was linked 8x from here.
+ *                                  Points at the real CBC hubs instead.
+ *   /quizes/elementary/grade-6  -> grade-6 lives under /quizes/junior.
+ *
+ * Labels are preserved verbatim where the route and the wording disagree
+ * (/schemes/grade-8 is captioned "Grade 9 schemes of work", and two siblings do
+ * the same). Those are flagged in the bug report rather than guessed at here,
+ * since only the folder contents can settle which half is wrong.
+ */
+
+const SUBSCRIPTION_AMOUNT = 1005;
+
+interface Item {
+    label: string;
+    href?: string;
+}
+
+interface Section {
+    title: string;
+    icon: typeof BookOpen;
+    accent: string;
+    items: Item[];
+}
+
+const tracks = [
+    {
+        title: 'Primary & CBC',
+        blurb: 'Grades 1–9. Curriculum designs, notes, exams and holiday assignments.',
+        href: '/grade1to6Resources',
+        icon: GraduationCap,
+        bar: 'bg-track-cbc',
+    },
+    {
+        title: 'Secondary',
+        blurb: 'Form 1–4 notes, revision booklets, topic tests and setbook guides.',
+        href: '/secondary',
+        icon: BookOpen,
+        bar: 'bg-track-kcse',
+    },
+    {
+        title: 'IGCSE',
+        blurb: 'Cambridge and Edexcel resources for GCSE, O-Level and A-Level.',
+        href: '/igcse',
+        icon: Globe2,
+        bar: 'bg-track-igcse',
+    },
+    {
+        title: 'College & Research',
+        blurb: 'Year 1–3 material, essays, papers, theses and abstracts.',
+        href: '/college',
+        icon: Library,
+        bar: 'bg-track-college',
+    },
+];
+
+const sections: Section[] = [
+    {
+        title: 'Past papers & exams',
+        icon: Trophy,
+        accent: 'text-track-kcse',
+        items: [
+            { label: '1995–2025 KCSE KNEC papers, questions, answers and reports', href: '/kcse' },
+            { label: '2008–2025 KCSE Form 4 county mocks', href: '/mocks' },
+            { label: 'Form 1–4 term 1, 2, 3 opener, mid and end-term exams', href: '/quizes/senior' },
+            { label: 'PP1 & PP2 term 1, 2, 3 mid/end-term exams with answers', href: '/quizes/elementary' },
+            { label: 'Grade 6 exams', href: '/quizes/junior/grade-6' },
+            { label: 'Grade 7 exams', href: '/quizes/junior/grade-7' },
+            { label: 'Grade 8 exams', href: '/quizes/junior/grade-8' },
+            { label: 'Grade 9 exams', href: '/quizes/senior/grade-9' },
+            { label: 'Grade 1–6 exams', href: '/grade123456Revision/exams' },
+        ],
+    },
+    {
+        title: 'Form 1–4 study material',
+        icon: BookOpen,
+        accent: 'text-track-kcse',
+        items: [
+            { label: '2025 Form 1–4 revision resources', href: '/secondary' },
+            { label: 'Form 1–4 class revision notes', href: '/form1234-notes' },
+            { label: 'Form 1–4 revision booklets', href: '/revision-booklets' },
+            { label: 'Form 1–4 topical tests', href: '/topic-tests' },
+            { label: 'Form 1–4 term 1, 2, 3 holiday assignments', href: '/assignments' },
+            { label: 'Form 3 & 4 setbook study guides', href: '/setbook-guides' },
+            { label: 'Life skills notes', href: '/lifeskills' },
+        ],
+    },
+    {
+        title: 'Primary & junior school (CBC)',
+        icon: GraduationCap,
+        accent: 'text-track-cbc',
+        items: [
+            { label: '2025 Grade 1–6 CBC resources', href: '/grade1to6Resources' },
+            { label: '2025 Grade 7, 8, 9 CBC junior secondary resources', href: '/grade78Resources' },
+            { label: 'Grade 1–6 curriculum designs', href: '/grade1to6Resources/curriculum' },
+            { label: 'Grade 7 curriculum designs', href: '/grade78Resources/curriculum-grade7' },
+            // Label kept verbatim: the route says grade8, the caption says Grade 9.
+            { label: 'Grade 9 curriculum designs', href: '/grade78Resources/curriculum-grade8' },
+            { label: 'Grade 1–6 notes', href: '/grade123456Revision/Notes' },
+            { label: 'Grade 9 notes', href: '/grade78Resources/Notes' },
+            { label: 'Grade 1–6 holiday assignments', href: '/grade123456Revision/holidayAssignment' },
+        ],
+    },
+    {
+        title: 'Schemes of work',
+        icon: PenSquare,
+        accent: 'text-track-cbc',
+        items: [
+            { label: 'Form 1–4 schemes of work', href: '/schemes' },
+            { label: 'CBC 2025 term 1, 2, 3 PP1 schemes of work', href: '/schemes/pp1' },
+            { label: '2025 term 1, 2, 3 PP2 schemes of work', href: '/schemes/pp2' },
+            ...[1, 2, 3, 4, 5, 6, 7].map((g) => ({
+                label: `Grade ${g} schemes of work`,
+                href: `/schemes/grade-${g}`,
+            })),
+            // Label kept verbatim: route grade-8, caption "Grade 9".
+            { label: 'Grade 9 schemes of work', href: '/schemes/grade-8' },
+        ],
+    },
+    {
+        title: 'Lesson plans',
+        icon: Presentation,
+        accent: 'text-track-cbc',
+        items: [
+            { label: 'Form 1–4 lesson plans', href: '/lesson-plans' },
+            { label: 'Pre-primary 1 lesson plans', href: '/lesson-plans/pp1' },
+            { label: 'Pre-primary 2 lesson plans', href: '/lesson-plans/pp2' },
+            ...[1, 2, 3, 4, 5, 6, 7].map((g) => ({
+                label: `Grade ${g} lesson plans`,
+                href: `/lesson-plans/grade-${g}`,
+            })),
+            // Label kept verbatim: route grade-8, caption "Grade 9".
+            { label: 'Grade 9 lesson plans', href: '/lesson-plans/grade-8' },
+        ],
+    },
+    {
+        title: 'In preparation',
+        icon: ClipboardList,
+        accent: 'text-muted-foreground',
+        items: [
+            { label: 'Grade 9 assignments' },
+            { label: 'Grade 8 assignments' },
+            { label: 'Grade 8 assessment and scoresheet' },
+            { label: '2024 Grade 7 JSS assignments, term 1, 2, 3' },
+            { label: 'Grade 7 assessment and scoresheet' },
+        ],
+    },
+];
 
 export default function Home() {
+    return (
+        <div className="space-y-12 pb-4">
+            {/* Hero */}
+            <section className="rounded-2xl border border-border bg-secondary px-6 py-10 sm:px-10 sm:py-14">
+                <p className="mb-3 text-sm font-medium uppercase tracking-wide text-primary">
+                    Clevers Schools Resources
+                </p>
+                <h1 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+                    Past papers, notes and schemes for every Kenyan classroom
+                </h1>
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+                    KCSE marking schemes, CBC curriculum designs, IGCSE material, revision
+                    booklets, topic tests and lesson plans — from Grade 1 through Form 4 and
+                    into college. Downloadable, and organised by the way you actually teach
+                    and revise.
+                </p>
 
-     return (
-          <>
-               <div className="p-4 border-b-2">
-                    <h2 className="text-red-600 text-xl font-bold">KCSE REVISION EDUCATION MATERIALS</h2>
-                    <div className="text-gray-700 font-bold mt-2 pb-4">REVISION EDUCATION MATERIALS</div>
+                <div className="mt-7 flex flex-wrap gap-3">
+                    <Button asChild size="lg" className="gap-2">
+                        <Link href="/subscribe">
+                            Get unlimited access
+                            <ArrowRight className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline">
+                        <Link href="/kcse">Browse KCSE past papers</Link>
+                    </Button>
+                </div>
 
-                    <ul className="list-disc pl-6 mt-4 space-y-3">
-                         <li><Link href="/secondary" className="text-foreground underline hover:text-blue-600">2025 FORM 2 3 4 REVISION RESOURCES</Link></li>
-                         <li><Link href="/grade78Resources" className="text-foreground underline hover:text-blue-600">2025 GRADE 7 8 9 CBC JUNIOR SEC. RESOURCES</Link></li>
-                         <li><Link href="/grade1to6Resources" className="text-foreground underline hover:text-blue-600">2025 GRADE 1 2 3 4 5 6 CBC RESOURCES</Link></li>
-                         <li><Link href="/cbc" className="text-foreground underline hover:text-blue-600">2025 PP1 PP2 CBC RESOURCES</Link></li>
-                         <li>PLAYGROUP/BABYCLASS</li>
-                    </ul>
-               </div>
-               <div>
-                    <h2 className="text-red-600 text-xl font-bold mt-6 border-b-2">
-                         A. HIGH SCHOOL RESOURCES - <span className="text-sm">Revision Education materials</span>
+                <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+                    {[
+                        `KES ${SUBSCRIPTION_AMOUNT.toLocaleString()} for a full year`,
+                        'Pay with M-Pesa',
+                        'Every section included',
+                    ].map((b) => (
+                        <li key={b} className="flex items-center gap-1.5">
+                            <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                            {b}
+                        </li>
+                    ))}
+                </ul>
+            </section>
+
+            {/* Curriculum entry points */}
+            <section>
+                <h2 className="mb-4 text-xl font-semibold tracking-tight">Start with your curriculum</h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                    {tracks.map(({ title, blurb, href, icon: Icon, bar }) => (
+                        <Link
+                            key={href}
+                            href={href}
+                            className="group flex gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                            <span aria-hidden="true" className={`w-1 shrink-0 rounded-full ${bar}`} />
+                            <span className="min-w-0">
+                                <span className="mb-1.5 flex items-center gap-2">
+                                    <Icon className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                                    <span className="font-semibold">{title}</span>
+                                    <ArrowRight className="h-4 w-4 -translate-x-1 text-primary opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                                </span>
+                                <span className="block text-sm leading-relaxed text-muted-foreground">
+                                    {blurb}
+                                </span>
+                            </span>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+
+            {/* The full inventory */}
+            {sections.map(({ title, icon: Icon, accent, items }) => (
+                <section key={title}>
+                    <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold tracking-tight">
+                        <Icon className={`h-5 w-5 ${accent}`} aria-hidden="true" />
+                        {title}
                     </h2>
+                    <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
+                        {items.map((item) => (
+                            <li key={item.label}>
+                                {item.href ? (
+                                    <Link
+                                        href={item.href}
+                                        className="group flex min-h-[48px] items-center gap-3 px-4 py-3 text-[15px] leading-snug transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                                    >
+                                        <FileText
+                                            className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary"
+                                            aria-hidden="true"
+                                        />
+                                        <span className="min-w-0 flex-1">{item.label}</span>
+                                        <ArrowRight
+                                            className="h-4 w-4 shrink-0 -translate-x-1 text-primary opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                                            aria-hidden="true"
+                                        />
+                                    </Link>
+                                ) : (
+                                    <span className="flex min-h-[48px] items-center justify-between gap-3 px-4 py-3 text-[15px] leading-snug text-muted-foreground/70">
+                                        {item.label}
+                                        <span className="shrink-0 rounded border border-border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide">
+                                            Soon
+                                        </span>
+                                    </span>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            ))}
 
-                    <ol className="list-decimal pl-6 mt-4 space-y-2 pb-4">
-                         <li>
-                              <Link href="/quizes/senior" className="text-foreground text-sm font-bold underline">
-                                   FORM 2 3 4 TERM 1 2 3 OPENER, MID AND END TERM EXAMS
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/kcse" className="text-foreground text-sm font-bold underline">
-                                   1995-2025 KCSE KNEC PAPERS QUESTIONS ANSWERS AND REPORT
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/mocks" className="text-foreground text-sm font-bold underline">
-                                   2008-2025 KCSE FORM 4 COUNTY MOCKS
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/schemes" className="text-foreground text-sm font-bold underline">
-                                   FORM 2 3 4 SCHEMES OF WORK
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/lesson-plans" className="text-foreground text-sm font-bold underline">
-                                   FORM 2 3 4 LESSON PLANS
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/form1234-notes" className="text-foreground text-sm font-bold underline">
-                                   FORM 2 3 4 CLASS REVISION NOTES
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/assignments" className="text-foreground text-sm font-bold underline">
-                                   FORM 2 3 4 TERM 1 2 3 HOLIDAY ASSIGNMENTS
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/setbook-guides" className="text-foreground text-sm font-bold underline">
-                                   FORM 3 4 SETBOOKS STUDY GUIDES
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/topic-tests" className="text-foreground text-sm font-bold underline">
-                                   FORM 2 3 4 TOPICAL TESTS
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/revision-booklets" className="text-foreground text-sm font-bold underline">
-                                   FORM 2 3 4 REVISION BOOKLETS
-                              </Link>
-                         </li>
-                         <li>
-                              <Link href="/lifeskills" className="text-foreground text-sm font-bold underline">
-                                   LIFE SKILLS NOTES
-                              </Link>
-                         </li>
-                         <li>
-                              <span className="text-gray-600 text-sm font-bold">
-                                   FORM 2 3 4 SYLLABUS (Coming Soon)
-                              </span>
-                         </li>
-                         <li>
-                              <span className="text-gray-600 text-sm font-bold">
-                                   KENYA SCHOOL CODES (Coming Soon)
-                              </span>
-                         </li>
-                         <li>
-                              <span className="text-gray-600 text-sm font-bold">
-                                   HOW TO REVISE AND PASS EXAMS (Coming Soon)
-                              </span>
-                         </li>
-                         <li>
-                              <span className="text-gray-600 text-sm font-bold">
-                                   GUIDANCE AND COUNSELLING NOTES (Coming Soon)
-                              </span>
-                         </li>
-                    </ol>
-
-                    <Link href="/subscribe" className=" p-0 mt-6 text-foreground underline font-bold">
-                         GET UNLIMITED ACCESS NOW - ALL SECONDARY RESOURCES
+            {/* Closing CTA */}
+            <section className="rounded-2xl border border-border bg-card px-6 py-8 text-center">
+                <h2 className="text-xl font-semibold tracking-tight">
+                    Unlimited downloads, every section
+                </h2>
+                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
+                    One subscription covers KCSE past papers, CBC resources, IGCSE material,
+                    schemes of work and lesson plans for a full year.
+                </p>
+                <Button asChild size="lg" className="mt-5 gap-2">
+                    <Link href="/subscribe">
+                        Get unlimited access — KES {SUBSCRIPTION_AMOUNT.toLocaleString()}
+                        <ArrowRight className="h-4 w-4" />
                     </Link>
-               </div>
-               <h2 className=" border-b-2 text-red-600 text-xl font-bold mt-6 pb-2">
-                    GRADE 7, 8 AND 9 JUNIOR SECONDARY RESOURCES
-               </h2>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 9 JUNIOR SECONDARY RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-8">GRADE 9 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/quizes/senior/grade-9">GRADE 9 EXAMS</Link>
-                         </li>
-                         <li className='text-gray-600 font-bold text-sm'>
-                              <span>GRADE 9 ASSIGNMENTS (Coming Soon)</span>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade78Resources/Notes">GRADE 9 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-8">GRADE 9 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade78Resources/curriculum-grade8">GRADE 9 CURRICULUM DESIGNS</Link>
-                         </li>
-                    </ol>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 8 JUNIOR SECONDARY RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-8">GRADE 8 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/quizes/junior/grade-8">GRADE 8 EXAMS</Link>
-                         </li>
-                         <li className='text-gray-600 font-bold text-sm'>
-                              <span>GRADE 8 ASSIGNMENTS (Coming Soon)</span>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade78Resources/Notes">GRADE 8 NOTES </Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-8">GRADE 8 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade78Resources/curriculum-grade8">GRADE 8 CURRICULUM DESIGNS</Link>
-                         </li>
-                         <li className='text-gray-600 font-bold text-sm'>
-                              <span>GRADE 8 ASSESSMENT AND SCORESHEET (Coming Soon)</span>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/quizes/junior/grade-8">GRADE 8 TERM 1 2 3 OPENER MID END EXAMS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-8">2024 GRADE 8 TERM 1 2 3 SCHEMES OF WORK</Link>
-                         </li>
-                    </ol>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 7 JUNIOR SECONDARY RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-7">GRADE 7 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/quizes/junior/grade-7">GRADE 7 EXAMS</Link>
-                         </li>
-                         <li className='text-gray-600 font-bold text-sm'>
-                              <span>2024 GRADE 7 JSS ASSIGNMENTS TERM 1 2 3 (Coming Soon)</span>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade78Resources/Notes">GRADE 7 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-7">GRADE 7 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade78Resources/curriculum-grade7">GRADE 7 CURRICULUM DESIGNS</Link>
-                         </li>
-                         <li className='text-gray-600 font-bold text-sm'>
-                              <span>GRADE 7 ASSESSMENT AND SCORESHEET (Coming Soon)</span>
-                         </li>
-
-                    </ol>
-
-               </div>
-               <h2 className="text-red-600 text-xl font-bold mt-6 border-b-2 pb-4">
-                    GRADE  1 2 3 4 5 6 CBC RESOURCES
-               </h2>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 6 CBC REVISION RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-6">GRADE 6 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/quizes/elementary/grade-6">GRADE 6 EXAMS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/holidayAssignment">GRADE 6 ASSIGNMENTS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/Notes">GRADE 6 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-6">GRADE 6 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade1to6Resources/curriculum">GRADE 6 CURRICULUM DESIGNS</Link>
-                         </li>
-
-                    </ol>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 5 CBC REVISION RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-5">GRADE 5 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/exams">GRADE 5 EXAMS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/holidayAssignment">GRADE 5 ASSIGNMENTS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/Notes">GRADE 5 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-5">GRADE 5 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade1to6Resources/curriculum">GRADE 5 CURRICULUM DESIGNS</Link>
-                         </li>
-                    </ol>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 4 CBC REVISION RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-4">GRADE 4 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/exams">GRADE 4 EXAMS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/holidayAssignment">GRADE 4 ASSIGNMENTS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/Notes">GRADE 4 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-4">GRADE 4 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade1to6Resources/curriculum">GRADE 4 CURRICULUM DESIGNS</Link>
-                         </li>
-                    </ol>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 3 CBC REVISION RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-3">GRADE 3 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/exams">GRADE 3 EXAMS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/holidayAssignment">GRADE 3 ASSIGNMENTS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/Notes">GRADE 3 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-3">GRADE 3 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade1to6Resources/curriculum">GRADE 3 CURRICULUM DESIGNS</Link>
-                         </li>
-                    </ol>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 2 CBC REVISION RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-2">GRADE 2 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/exams">GRADE 2 EXAMS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/holidayAssignment">GRADE 2 ASSIGNMENTS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/Notes">GRADE 2 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-2">GRADE 2 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade1to6Resources/curriculum">GRADE 2 CURRICULUM DESIGNS</Link>
-                         </li>
-                    </ol>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <h2 className='text-normal font-light text-foreground '>
-                         GRADE 1 CBC REVISION RESOURCES
-                    </h2>
-                    <ol className='list-decimal pl-6 mt-4 space-y-2'>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/schemes/grade-1">GRADE 1 SCHEMES OF WORK</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/exams">GRADE 1 EXAMS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/holidayAssignment">GRADE 1 ASSIGNMENTS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade123456Revision/Notes">GRADE 1 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/lesson-plans/grade-1">GRADE 1 LESSON PLANS</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/grade1to6Resources/curriculum">GRADE 1 CURRICULUM DESIGNS</Link>
-                         </li>
-                    </ol>
-               </div>
-               <div className='pb-4 border-b-2 '>
-                    <h2 className='text-xl font-bold mt-6  text-foreground underline'>
-                         PRE-PRIMARY 1 2- REVISION RESOURCES + PLAYGROUP
-                    </h2>
-                    <span className='text-x-sm font-light '>REVISION EDUCATION MATERIALS</span>
-               </div>
-               <div className='border-b-2 pb-4'>
-                    <ul className='list-bullets space-y-2'>
-                         <li className='text-foreground underline font-semibold text-sm'>
-                              <Link href="/cbc">Pre-primary 1 And 2  KICD Approved syllabus </Link>
-                         </li>
-                         <li className='text-foreground underline font-semibold text-sm'>
-                              <Link href="/schemes/pp1">C.B.C 2025 TERM 1 2 3 Pre-primary 1 Schemes of work </Link>
-                         </li>
-                         <li className='text-foreground underline font-semibold text-sm'>
-                              <Link href="/schemes/pp2">2025 TERM 1 2 3 Pre-primary 2 Schemes of work</Link>
-                         </li>
-                         <li className='text-foreground underline font-semibold text-sm'>
-                              <Link href="/lesson-plans/pp1">Pre-primary 1 NOTES</Link>
-                         </li>
-                         <li className='text-foreground underline font-semibold text-sm'>
-                              <Link href="/lesson-plans/pp2">P.P 2 NOTES </Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/quizes/elementary">2025 PP1, PP2 TERM 1,2,3 MID/END TERM EXAMS QUE AND ANSWERS </Link>
-                         </li>
-                         <li className='text-foreground'>
-                              And <Link className='text-foreground underline font-bold text-sm' href="/cbc">K.I.C.D. Competency Based Curriculum Design Materials</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/cbc">PP12 CBC ASSESSMENT TOOLS- ASSESSMENT BOOK TEMPLATE</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/cbc">PP 1,2 CBC ASSESSMENT TOOLS- RECORD OF WORK TEMPLATE</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/cbc">PP 1&2 CBC ASSESSMENT TOOLS- REPORT CARD TEMPLATE</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/cbc">SCHOOL YEAR REPORT FOR EARLY YEARS OF EDUCATION</Link>
-                         </li>
-                         <li className='text-foreground underline font-bold text-sm'>
-                              <Link href="/cbc">CBC ASSESSMENT RUBRIC</Link>
-                         </li>
-                    </ul>
-
-               </div>
-               <Link href="/subscribe" className='text-foreground pl-12 text-center underline font-bold text-xl pb-2'>GET UNLIMITED ACCESS NOW</Link>
-
-          </>
-     );
+                </Button>
+            </section>
+        </div>
+    );
 }
