@@ -140,6 +140,16 @@ body {
  * components/resources/ResourceBrowser, and nothing references the classes any
  * more, so the definitions are gone too. */
 
+/* Horizontal scrolling without a visible scrollbar — used by the header nav,
+ * which scrolls rather than wrapping when its nine items exceed the row. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Mobile Bottom Nav Animations */
 @keyframes slide-up {
   from {

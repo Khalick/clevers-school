@@ -52,6 +52,8 @@ export const primaryNav: NavItem[] = [
     { title: 'Primary & CBC', href: '/grade1to6Resources' },
     { title: 'Secondary', href: '/secondary' },
     { title: 'KCSE Papers', href: '/kcse' },
+    { title: 'County Mocks', href: '/mocks' },
+    { title: 'National School Exams', href: '/nationals' },
     { title: 'IGCSE', href: '/igcse' },
     { title: 'For Teachers', href: '/lesson-plans' },
     { title: 'College', href: '/college' },

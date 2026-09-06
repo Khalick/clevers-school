@@ -29,7 +29,7 @@ interface SiteHeaderProps {
  * (it never imported usePathname). Between 768px and 1023px the six columns
  * truncated labels mid-word while the sidebars were already hidden.
  *
- * This is a single row: brand, seven primary sections with a real active state,
+ * This is a single row: brand, nine primary sections with a real active state,
  * search, account. The full inventory lives in the rail and the mobile sheet.
  */
 export default function SiteHeader({ onOpenNav, onOpenSearch }: SiteHeaderProps) {
@@ -58,14 +58,22 @@ export default function SiteHeader({ onOpenNav, onOpenSearch }: SiteHeaderProps)
                     <Logo className="h-9 w-24 sm:h-10 sm:w-28" />
                 </Link>
 
-                <nav aria-label="Primary" className="hidden lg:flex flex-1 items-center gap-1">
+                {/* Nine items including "National School Exams" are wide. Below
+                    1440px the padding tightens and the search collapses to an icon,
+                    which keeps all nine on a 1280px laptop; narrower than that the
+                    nav scrolls rather than wrapping or pushing the account menu
+                    off-screen (the left rail carries the same sections there). */}
+                <nav
+                    aria-label="Primary"
+                    className="no-scrollbar hidden min-w-0 flex-1 items-center gap-0.5 overflow-x-auto lg:flex min-[1440px]:gap-1"
+                >
                     {primaryNav.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
                             aria-current={isActive(item.href) ? 'page' : undefined}
                             className={[
-                                'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                                'shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition-colors min-[1440px]:px-3',
                                 isActive(item.href)
                                     ? 'bg-accent text-accent-foreground'
                                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
@@ -77,19 +85,21 @@ export default function SiteHeader({ onOpenNav, onOpenSearch }: SiteHeaderProps)
                 </nav>
 
                 <div className="ml-auto flex items-center gap-1">
+                    {/* Full search field only from 1440px; below that an icon, so
+                        all nine nav items fit on a 1280px laptop. */}
                     <Button
                         variant="outline"
                         onClick={onOpenSearch}
-                        className="hidden gap-2 text-muted-foreground sm:flex"
+                        className="hidden gap-2 text-muted-foreground min-[1440px]:flex"
                         aria-label="Search resources"
                     >
                         <Search className="h-4 w-4" />
-                        <span className="hidden md:inline">Search resources…</span>
+                        <span>Search resources…</span>
                     </Button>
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="sm:hidden"
+                        className="min-[1440px]:hidden"
                         onClick={onOpenSearch}
                         aria-label="Search resources"
                     >
