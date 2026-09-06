@@ -1,23 +1,27 @@
-import Link from "next/link";
+import type { Metadata } from 'next';
 
-const SecondarySchoolResources = () => {
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
+
+const ROUTE = '/secondary';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Everything for Form 1 to Form 4, in one place.',
+};
+
+const links = [
+    { title: 'Form 1–4 Notes', href: '/form1234-notes', description: 'Class revision notes, all subjects' },
+    { title: 'Revision Booklets', href: '/revision-booklets', description: 'End-of-topic questions and answers' },
+    { title: 'Schemes of Work', href: '/schemes/form1To4', description: 'Term-by-term coverage' },
+    { title: 'Lesson Plans', href: '/lesson-plans/form1To4', description: 'For teachers' },
+];
+
+export default function Page() {
     return (
-        <div className="flex flex-col gap-2">
-            <Link href='/form1234-notes' className="text-2xl text-indigo-400">
-            All Form 1 2 3 4 Notes For All Subjects
-            </Link>
-            <Link href='/revision-booklets' className="text-2xl text-indigo-400">
-            All Form 1 2 3 4 Revision Booklets
-            </Link>
-            <Link href='/schemes/form1To4' className="text-2xl text-indigo-400">
-            All Form 1 2 3 4 Schemes Of Work
-            </Link>
-            <Link href='/lesson-plans/form1To4' className="text-2xl text-indigo-400">
-            All Form 1 2 3 4 Lesson Plans
-            </Link>
-
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Everything for Form 1 to Form 4, in one place.</p>
+            <SectionGrid links={links} columns={2} />
         </div>
-    )
+    );
 }
-
-export default SecondarySchoolResources;

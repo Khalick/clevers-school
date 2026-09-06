@@ -1,37 +1,26 @@
-// components/IGCSESection.tsx
+import type { Metadata } from 'next';
 
-import { BookOpen } from 'lucide-react';
-import Link from 'next/link';
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
 
-const Page: React.FC = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 pl-4">
-         <Link
-            
-              href="/quizes/junior/grade-6"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-foreground" />
-              GRADE 6
-            </Link>
-            <Link
-            
-              href="/quizes/junior/grade-7"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-foreground" />
-             GRADE 7
-            </Link>
-            <Link
-            
-              href="/quizes/junior/grade-8"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-foreground" />
-             GRADE 8
-            </Link>
-    </div>
-  );
+const ROUTE = '/quizes/junior';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Weekly quizzes for Grades 6 to 8.',
 };
 
-export default Page;
+const links = [
+    { title: 'Grade 6', href: '/quizes/junior/grade-6' },
+    { title: 'Grade 7', href: '/quizes/junior/grade-7' },
+    { title: 'Grade 8', href: '/quizes/junior/grade-8' },
+];
+
+export default function Page() {
+    return (
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Weekly quizzes for Grades 6 to 8.</p>
+            <SectionGrid links={links} columns={3} />
+        </div>
+    );
+}

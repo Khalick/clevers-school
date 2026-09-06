@@ -134,29 +134,11 @@ body {
   }
 }
 
-@layer components {
-  /* `bg-grid-pattern` is referenced by 172 page files and was never defined
-   * anywhere — it rendered nothing. Defined here as a subtle dot grid so those
-   * existing references become a real, theme-aware texture. */
-  .bg-grid-pattern {
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      hsl(var(--foreground) / 0.12) 1px,
-      transparent 0
-    );
-    background-size: 22px 22px;
-  }
-
-  /* Referenced by app/grade1to6Resources and app/form1234-notes as `text-navbar`
-   * / `text-headers`; both were undefined, so those links rendered as plain
-   * black with no link affordance. */
-  .text-navbar {
-    @apply text-primary hover:text-[hsl(var(--brand-700))] font-medium transition-colors;
-  }
-  .text-headers {
-    @apply text-foreground font-semibold tracking-tight;
-  }
-}
+/* The .bg-grid-pattern, .text-navbar and .text-headers utilities defined here
+ * earlier existed only to give meaning to class names the pasted page template
+ * referenced but never defined. Those pages have since been replaced by
+ * components/resources/ResourceBrowser, and nothing references the classes any
+ * more, so the definitions are gone too. */
 
 /* Mobile Bottom Nav Animations */
 @keyframes slide-up {

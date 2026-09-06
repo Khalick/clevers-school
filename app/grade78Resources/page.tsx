@@ -1,21 +1,26 @@
-import Link from "next/link";
+import type { Metadata } from 'next';
 
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
 
-const Grade78Resources = () => {
+const ROUTE = '/grade78Resources';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Junior secondary curriculum designs and notes.',
+};
+
+const links = [
+    { title: 'Grade 7 Curriculum Designs', href: '/grade78Resources/curriculum-grade7' },
+    { title: 'Grade 8 Curriculum Designs', href: '/grade78Resources/curriculum-grade8' },
+    { title: 'Grade 7 Notes', href: '/grade78Resources/Notes' },
+];
+
+export default function Page() {
     return (
-        <div className="flex flex-col gap-4">
-            <Link href='/grade78Resources/curriculum-grade7' className='text-foreground font-semibold mb-4 text-2xl border-b-2 text-center'>
-                Grade 7 Curriculum Design Materials
-            </Link>
-            <Link href='/grade78Resources/curriculum-grade8' className='text-foreground font-semibold mb-4 text-2xl border-b-2 text-center'>
-                Grade 8 Curriculum Design Materials
-            </Link>
-            <Link href='/grade78Resources/Notes' className='text-foreground font-semibold mb-4 text-2xl border-b-2 text-center'>
-                Grade 7 Notes
-            </Link>
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Junior secondary curriculum designs and notes.</p>
+            <SectionGrid links={links} columns={2} />
         </div>
-    )
-
+    );
 }
-
-export default Grade78Resources;

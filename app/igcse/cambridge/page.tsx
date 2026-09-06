@@ -1,45 +1,26 @@
-import React from 'react';
-import { BookOpen } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import CambridgeALevel from './A-Level/page';
-import CambridgeOLevel from './O-Level/page';
-import CambridgeGCSELevel from './GCSE/page';
+import type { Metadata } from 'next';
 
-interface LevelComponentProps {
-  children: React.ReactNode;
-}
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
 
-const LevelSection: React.FC<LevelComponentProps> = ({ children }) => (
-  <div className="w-full p-4 rounded-lg bg-card shadow-sm hover:shadow-md transition-shadow duration-200">
-    {children}
-  </div>
-);
+const ROUTE = '/igcse/cambridge';
 
-const IGCSESection: React.FC = () => {
-  const levels = [
-    { Component: CambridgeALevel, key: 'a-level' },
-    { Component: CambridgeOLevel, key: 'o-level' },
-    { Component: CambridgeGCSELevel, key: 'gcse' },
-  ];
-
-  return (
-    <Card className="w-full border border-gray-200 rounded-lg overflow-hidden">
-      <CardHeader className="bg-green-500 border-b border-green-600">
-        <CardTitle className="text-xl text-white flex items-center gap-3">
-          <BookOpen className="h-6 w-6" />
-          <span className="font-semibold">IGCSE CAMBRIDGE RESOURCES</span>
-        </CardTitle>
-      </CardHeader>
-      
-      <CardContent className="flex flex-col gap-6 p-6">
-        {levels.map(({ Component, key }) => (
-          <LevelSection key={key}>
-            <Component />
-          </LevelSection>
-        ))}
-      </CardContent>
-    </Card>
-  );
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Cambridge resources by level.',
 };
 
-export default IGCSESection;
+const links = [
+    { title: 'GCSE', href: '/igcse/cambridge/GCSE' },
+    { title: 'O-Level', href: '/igcse/cambridge/O-Level' },
+    { title: 'A-Level', href: '/igcse/cambridge/A-Level' },
+];
+
+export default function Page() {
+    return (
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Cambridge resources by level.</p>
+            <SectionGrid links={links} columns={3} />
+        </div>
+    );
+}

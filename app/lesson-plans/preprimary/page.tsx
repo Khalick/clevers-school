@@ -1,22 +1,25 @@
-import Link from "next/link";
-import { Card,CardContent,CardHeader,CardTitle } from "@/components/ui/card";
+import type { Metadata } from 'next';
+
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
+
+const ROUTE = '/lesson-plans/preprimary';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Pre-primary lesson plans.',
+};
+
+const links = [
+    { title: 'PP1 Lesson Plans', href: '/lesson-plans/pp1' },
+    { title: 'PP2 Lesson Plans', href: '/lesson-plans/pp2' },
+];
 
 export default function Page() {
     return (
-        <Card className="w-full shadow-lg hover:shadow-xl transition-shadow duration-300 mt-4">
-    <CardHeader className="bg-green-600 border-b border-gray-200">
-      <CardTitle className="text-base font-normal text-white">
-      PP1 , PP2 CBC LESSON PLANS
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-6 gap-4 flex flex-col">
-        <Link href='/lesson-plans/pp1' className='text-center text-zinc-800'>
-        PP1 LESSON PLANS
-        </Link>
-        <Link href='/lesson-plans/pp2' className='text-center text-zinc-800'>
-        PP2 LESSON PLANS
-        </Link>
-    </CardContent>
-    </Card>
-    )
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Pre-primary lesson plans.</p>
+            <SectionGrid links={links} columns={2} />
+        </div>
+    );
 }

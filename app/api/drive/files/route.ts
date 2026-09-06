@@ -28,9 +28,12 @@ export async function GET(request: Request) {
         }
 
         const response = await drive.files.list({
+            // modifiedTime and size were not requested before, so every row's
+            // "Last modified" line rendered undefined and was never shown.
+            fields: 'files(id, name, mimeType, webViewLink, modifiedTime, size)',
             q: `'${folderId}' in parents and trashed = false`,
-            fields: 'files(id, name, mimeType, webViewLink)',
             orderBy: 'name',
+            pageSize: 1000,
         });
 
         return NextResponse.json({ files: response.data.files });

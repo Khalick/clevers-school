@@ -1,53 +1,28 @@
-// components/IGCSESection.tsx
+import type { Metadata } from 'next';
 
-import { BookOpen } from 'lucide-react';
-import Link from 'next/link';
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
 
-const ElementarySchoolSection: React.FC = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 pl-4">
-         <Link
-            
-              href="/quizes/elementary/grade-1"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-foreground" />
-             GRADE 1 
-            </Link>
-            <Link
-            
-              href="/quizes/elementary/grade-2"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-foreground" />
-           GRADE 2 
-            </Link>
-            <Link
-            
-            href="/quizes/elementary/grade-3"
-            className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-          >
-              <BookOpen size={16} className="text-foreground" />
-         GRADE 3
-          </Link>
-          <Link
-            
-            href="/quizes/elementary/grade-4"
-            className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-          >
-              <BookOpen size={16} className="text-foreground" />
-        GRADE 4
-          </Link>
-          <Link
-            
-            href="/quizes/elementary/grade-5"
-            className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-          >
-              <BookOpen size={16} className="text-foreground" />
-        GRADE 5 
-          </Link>
-    </div>
-  );
+const ROUTE = '/quizes/elementary';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Weekly quizzes for Grades 1 to 5.',
 };
 
-export default ElementarySchoolSection;
+const links = [
+    { title: 'Grade 1', href: '/quizes/elementary/grade-1' },
+    { title: 'Grade 2', href: '/quizes/elementary/grade-2' },
+    { title: 'Grade 3', href: '/quizes/elementary/grade-3' },
+    { title: 'Grade 4', href: '/quizes/elementary/grade-4' },
+    { title: 'Grade 5', href: '/quizes/elementary/grade-5' },
+];
+
+export default function Page() {
+    return (
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Weekly quizzes for Grades 1 to 5.</p>
+            <SectionGrid links={links} columns={3} />
+        </div>
+    );
+}

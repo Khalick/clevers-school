@@ -1,58 +1,33 @@
-import Link from "next/link";
+import type { Metadata } from 'next';
 
-export default function Grade1To8Schemes() {
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
+
+const ROUTE = '/schemes/cbc';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'CBC schemes of work, PP1 to Grade 8.',
+};
+
+const links = [
+    { title: 'PP1', href: '/schemes/pp1' },
+    { title: 'PP2', href: '/schemes/pp2' },
+    { title: 'Grade 1', href: '/schemes/grade-1' },
+    { title: 'Grade 2', href: '/schemes/grade-2' },
+    { title: 'Grade 3', href: '/schemes/grade-3' },
+    { title: 'Grade 4', href: '/schemes/grade-4' },
+    { title: 'Grade 5', href: '/schemes/grade-5' },
+    { title: 'Grade 6', href: '/schemes/grade-6' },
+    { title: 'Grade 7', href: '/schemes/grade-7' },
+    { title: 'Grade 8', href: '/schemes/grade-8' },
+];
+
+export default function Page() {
     return (
-        <div className="w-full max-w-3xl mx-auto space-y-6 p-4">
-            <div className="w-full border rounded-lg p-4">
-            <Link href='/schemes/pp1' className="text-navbar">
-             PP1 Schemes of Work
-            </Link>
-          </div>
-          <div className="w-full border rounded-lg p-4">
-          <Link href='/schemes/pp2' className="text-navbar">
-             PP2 Schemes of Work
-            </Link>
-          </div>
-           <div className="w-full border rounded-lg p-4">
-           <Link href='/schemes/grade-1' className="text-navbar">
-            Grade 1 Schemes of Work
-            </Link>
-          </div>
-          <div className="w-full border rounded-lg p-4">
-          <Link href='/schemes/grade-2' className="text-navbar">
-            Grade 2 Schemes of Work
-            </Link>
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">CBC schemes of work, PP1 to Grade 8.</p>
+            <SectionGrid links={links} columns={3} />
         </div>
-        <div className="w-full border rounded-lg p-4">
-        <Link href='/schemes/grade-3' className="text-navbar">
-            Grade 3 Schemes of Work
-            </Link>
-          </div>
-          <div className="w-full border rounded-lg p-4">
-          <Link href='/schemes/grade-4' className="text-navbar">
-            Grade 4 Schemes of Work
-            </Link>
-          </div>
-          <div className="w-full border rounded-lg p-4">
-          <Link href='/schemes/grade-5' className="text-navbar">
-            Grade 5 Schemes of Work
-            </Link>
-          </div>
-          <div className="w-full border rounded-lg p-4">
-          <Link href='/schemes/grade-6' className="text-navbar">
-            Grade 6 Schemes of Work
-            </Link>
-          </div>
-          <div className="w-full border rounded-lg p-4">
-          <Link href='/schemes/grade-7' className="text-navbar">
-            Grade 7 Schemes of Work
-            </Link>
-          </div>
-          <div className="w-full border rounded-lg p-4">
-          <Link href='/schemes/grade-8' className="text-navbar">
-            Grade 8 Schemes of Work
-            </Link>
-          </div>
-        </div>
-    )
+    );
 }

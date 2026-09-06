@@ -1,45 +1,27 @@
-// components/IGCSESection.tsx
+import type { Metadata } from 'next';
 
-import { BookOpen } from 'lucide-react';
-import Link from 'next/link';
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
 
-const Home: React.FC = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 pl-4">
-         <Link
-            
-              href="/quizes/senior/grade-9"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-foreground" />
-              GRADE 9
-            </Link>
-            <Link
-            
-              href="/quizes/senior/grade-10"
-              className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-            >
-                <BookOpen size={16} className="text-foreground" />
-            GRADE 10
-            </Link>
-            <Link
-            
-            href="/quizes/senior/grade-11"
-            className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-          >
-              <BookOpen size={16} className="text-foreground" />
-          GRADE 11
-          </Link>
-          <Link
-            
-            href="/quizes/senior/grade-12"
-            className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
-          >
-              <BookOpen size={16} className="text-foreground" />
-          GRADE 12
-          </Link>
-    </div>
-  );
+const ROUTE = '/quizes/senior';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Weekly quizzes for Grades 9 to 12.',
 };
 
-export default Home;
+const links = [
+    { title: 'Grade 9', href: '/quizes/senior/grade-9' },
+    { title: 'Grade 10', href: '/quizes/senior/grade-10' },
+    { title: 'Grade 11', href: '/quizes/senior/grade-11' },
+    { title: 'Grade 12', href: '/quizes/senior/grade-12' },
+];
+
+export default function Page() {
+    return (
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Weekly quizzes for Grades 9 to 12.</p>
+            <SectionGrid links={links} columns={3} />
+        </div>
+    );
+}

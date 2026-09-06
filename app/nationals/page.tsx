@@ -1,67 +1,30 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function NationalSchoolsMocks() {
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
+
+const ROUTE = '/nationals';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'Mock examinations set by national schools.',
+};
+
+const links = [
+    { title: 'Alliance High School', href: '/nationals/alliance' },
+    { title: 'Alliance Girls High School', href: '/nationals/alliance-girls' },
+    { title: 'Mang’u High School', href: '/nationals/mangu' },
+    { title: 'Sunshine Secondary', href: '/nationals/sunshine' },
+    { title: 'National School Mocks 2016', href: '/nationals/2016' },
+    { title: 'Alliance High School Mock 2017', href: '/nationals/2017' },
+    { title: 'Sunshine High School Mock', href: '/nationals/2019' },
+];
+
+export default function Page() {
     return (
-        <Card className="w-full shadow-lg hover:shadow-xl transition-shadow duration-300 mt-4">
-            <CardHeader className="bg-green-600 border-b border-gray-200">
-                <CardTitle className="text-base font-normal text-white">
-                    NATIONAL SCHOOLS MOCKS 
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 block divide-x-2 divide-blue-900">
-                <ol>
-                    <li>
-                        <Link href='/nationals/2016'
-                            className='text-gray-950'>
-                               NATIONAL SHOOL MOCKS 2016
-                            
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/nationals/sunshine'
-                            className='text-gray-950'>
-                             SUNSHINE SCHOOL MOCK
-                            
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/nationals/mangu'
-                            className='text-gray-950'>
-                             MANGU HIGH SCHOOL MOCK
-                            
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/nationals/alliance'
-                            className='text-gray-950'>
-                            ALLIANCE HIGH SCHOOL MOCK
-                            
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/nationals/alliance-girls'
-                            className='text-gray-950'>
-                            ALLIANCE GIRLS HIGH SCHOOL MOCK
-                            
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/nationals/2017'
-                            className='text-gray-950'>
-                            ALLIANCE HIGH SCHOOL MOCK 2017
-                            
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/nationals/2019'
-                            className='text-gray-950'>
-                           SUNSHINE HIGH SCHOOL MOCK
-                            
-                        </Link>
-                    </li>
-                </ol>
-            </CardContent>
-        </Card>
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">Mock examinations set by national schools.</p>
+            <SectionGrid links={links} columns={2} />
+        </div>
     );
 }

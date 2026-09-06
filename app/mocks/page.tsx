@@ -1,27 +1,34 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
+import type { Metadata } from 'next';
 
-const CountyMocks = () => {
-    return (
-        <Card className="w-full shadow-lg hover:shadow-xl transition-shadow duration-300 mt-4">
-            <CardHeader className="bg-green-600 border-b border-gray-200">
-                <CardTitle className="text-base font-normal text-white">
-                    COUNTY MOCKS BY YEAR
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 block">
-                <ol>
-                    {[2024, 2023, 2019, 2018, 2017, 2016, 2015,2014,2013,2012,2011].map((year) => (
-                        <li key={year}>
-                            <Link href={`../mocks/${year}`} className="text-gray-900 border-b-2">
-                                20<span className="text-red-600">{year.toString().slice(-2)}</span> COUNTY MOCKS
-                            </Link>
-                        </li>
-                    ))}
-                </ol>
-            </CardContent>
-        </Card>
-    );
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
+
+const ROUTE = '/mocks';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'County mock examinations, by year.',
 };
 
-export default CountyMocks;
+const links = [
+    { title: '2024 County Mocks', href: '/mocks/2024' },
+    { title: '2023 County Mocks', href: '/mocks/2023' },
+    { title: '2019 County Mocks', href: '/mocks/2019' },
+    { title: '2018 County Mocks', href: '/mocks/2018' },
+    { title: '2017 County Mocks', href: '/mocks/2017' },
+    { title: '2016 County Mocks', href: '/mocks/2016' },
+    { title: '2015 County Mocks', href: '/mocks/2015' },
+    { title: '2014 County Mocks', href: '/mocks/2014' },
+    { title: '2013 County Mocks', href: '/mocks/2013' },
+    { title: '2012 County Mocks', href: '/mocks/2012' },
+    { title: '2011 County Mocks', href: '/mocks/2011' },
+];
+
+export default function Page() {
+    return (
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">County mock examinations, by year.</p>
+            <SectionGrid links={links} columns={3} />
+        </div>
+    );
+}

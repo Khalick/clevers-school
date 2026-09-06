@@ -1,30 +1,39 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
+import type { Metadata } from 'next';
 
-const KCSEPastPapers = () => {
-    return (
-        <Card className="w-full shadow-lg hover:shadow-xl transition-shadow duration-300 mt-4">
-            <CardHeader className="bg-green-600 border-b border-gray-200">
-                <CardTitle className="text-3xl font-bold text-center text-white">
-                    KCSE KNEC PASTPAPERS
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-                {[2023, 2022, 2021, ...Array.from({ length: 13 }, (_, i) => 2020 - i)].map((year) => (
-                    <Link
-                        key={year}
-                        href={`../kcse/${year}`}
-                        className={`block text-blue-950 ${year >= 2023 ? 'font-sans text-center text-red-600' : 'uppercase font-bold text-center'}`}
-                    >
-                        {year >= 2023 ? (
-                            <>All {year} KNEC PAST PAPERS QUE AND MS / REPORTS</>
-                        ) : (
-                            <>{year} KNEC PAST PAPERS QUE AND MS</>
-                        )}
-                    </Link>
-                ))}
-            </CardContent>
-        </Card>
-    );
+import SectionGrid from '@/components/resources/SectionGrid';
+import { titleForPath } from '@/lib/navigation';
+
+const ROUTE = '/kcse';
+
+export const metadata: Metadata = {
+    title: `${titleForPath(ROUTE)} | Clevers Schools Resources`,
+    description: 'KNEC past papers, marking schemes and examiner reports, by year.',
 };
- export default KCSEPastPapers;
+
+const links = [
+    { title: '2023', href: '/kcse/2023', description: 'Papers, marking schemes & reports' },
+    { title: '2022', href: '/kcse/2022', description: 'Papers, marking schemes & reports' },
+    { title: '2021', href: '/kcse/2021', description: 'Papers, marking schemes & reports' },
+    { title: '2020', href: '/kcse/2020', description: 'Papers & marking schemes' },
+    { title: '2019', href: '/kcse/2019', description: 'Papers & marking schemes' },
+    { title: '2018', href: '/kcse/2018', description: 'Papers & marking schemes' },
+    { title: '2017', href: '/kcse/2017', description: 'Papers & marking schemes' },
+    { title: '2016', href: '/kcse/2016', description: 'Papers & marking schemes' },
+    { title: '2015', href: '/kcse/2015', description: 'Papers & marking schemes' },
+    { title: '2014', href: '/kcse/2014', description: 'Papers & marking schemes' },
+    { title: '2013', href: '/kcse/2013', description: 'Papers & marking schemes' },
+    { title: '2012', href: '/kcse/2012', description: 'Papers & marking schemes' },
+    { title: '2011', href: '/kcse/2011', description: 'Papers & marking schemes' },
+    { title: '2010', href: '/kcse/2010', description: 'Papers & marking schemes' },
+    { title: '2009', href: '/kcse/2009', description: 'Papers & marking schemes' },
+    { title: '2008', href: '/kcse/2008', description: 'Papers & marking schemes' },
+];
+
+export default function Page() {
+    return (
+        <div className="space-y-5">
+            <p className="max-w-prose leading-relaxed text-muted-foreground">KNEC past papers, marking schemes and examiner reports, by year.</p>
+            <SectionGrid links={links} columns={3} />
+        </div>
+    );
+}
