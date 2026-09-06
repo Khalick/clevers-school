@@ -186,8 +186,12 @@ export default function Form1Notes() {
                                                 key={file.id}
                                                 className="group flex items-center p-3 md:p-4 rounded-lg border border-border
                                                          hover:bg-accent hover:border-primary/40 transition-all duration-200
-                                                         cursor-pointer shadow-sm hover:shadow-md bg-card backdrop-blur-sm"
+                                                         cursor-pointer shadow-sm hover:shadow-md bg-card backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                                 onClick={() => handleDocumentClick(file)}
+                                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleDocumentClick(file); } }}
+                                                role="button"
+                                                tabIndex={0}
+                                                aria-label={`Open ${file.name}`}
                                             >
                                                 <FileText className="h-5 w-5 md:h-6 md:w-6 text-foreground group-hover:text-primary
                                                                    transition-colors mr-3 flex-shrink-0" />

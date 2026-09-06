@@ -123,8 +123,13 @@ export default function Page() {
                                 <div
                                     key={file.id}
                                     onClick={() => handleDocumentClick(file)}
-                                    className="flex items-center p-3 rounded-md border border-gray-200 
-                                             hover:bg-gray-50 hover:border-emerald-500 transition-all cursor-pointer"
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleDocumentClick(file); } }}
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-label={`Open ${file.name}`}
+                                    className="flex items-center p-3 rounded-md border border-border
+                                             hover:bg-accent hover:border-primary/40 transition-all cursor-pointer
+                                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                 >
                                     <FileText className="text-muted-foreground mr-3 h-5 w-5" />
                                     <div>
