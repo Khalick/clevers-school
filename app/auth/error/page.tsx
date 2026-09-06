@@ -39,7 +39,7 @@ export default function AuthError() {
     "email-not-verified": {
       title: "Email Not Verified",
       description: "Your email address has not been verified. Please check your inbox for a verification email.",
-      icon: <Mail className="h-12 w-12 text-blue-500" />,
+      icon: <Mail className="h-12 w-12 text-foreground" />,
       action: { text: "Resend Verification", href: "/auth/verify-email" },
     },
     "authentication-error": {

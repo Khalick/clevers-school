@@ -11,7 +11,7 @@ const ElementarySchoolSection: React.FC = () => {
               href="/quizes/elementary/grade-1"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
              GRADE 1 
             </Link>
             <Link
@@ -19,7 +19,7 @@ const ElementarySchoolSection: React.FC = () => {
               href="/quizes/elementary/grade-2"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
            GRADE 2 
             </Link>
             <Link
@@ -27,7 +27,7 @@ const ElementarySchoolSection: React.FC = () => {
             href="/elementary/grade-3"
             className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
           >
-              <BookOpen size={16} className="text-blue-500" />
+              <BookOpen size={16} className="text-foreground" />
          GRADE 3
           </Link>
           <Link
@@ -35,7 +35,7 @@ const ElementarySchoolSection: React.FC = () => {
             href="/quizes/elementary/grade-4"
             className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
           >
-              <BookOpen size={16} className="text-blue-500" />
+              <BookOpen size={16} className="text-foreground" />
         GRADE 4
           </Link>
           <Link
@@ -43,7 +43,7 @@ const ElementarySchoolSection: React.FC = () => {
             href="/quizes/elementary/grade-5"
             className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
           >
-              <BookOpen size={16} className="text-blue-500" />
+              <BookOpen size={16} className="text-foreground" />
         GRADE 5 
           </Link>
     </div>

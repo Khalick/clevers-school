@@ -35,7 +35,7 @@ export default function Page() {
     ];
 
     return (
-        <div className="w-full max-w-4xl mx-auto p-4 border-2 border-gray-300 rounded-lg">
+        <div className="w-full max-w-4xl mx-auto p-4 border-2 border-input rounded-lg">
             <h2 className="text-2xl font-bold mb-6 text-center">TOPICAL TESTS</h2>
             <Accordion type="multiple" defaultValue={subjects.map((_, index) => `item-${index}`)}>
                 {subjects.map((subject, index) => (

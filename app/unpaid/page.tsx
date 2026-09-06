@@ -90,13 +90,13 @@ export default function UnpaidPage() {
 
   return (
     <div className="min-h-screen flex w-full items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full border border-gray-100">
+      <div className="bg-card p-8 rounded-xl shadow-lg max-w-lg w-full border border-gray-100">
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center p-3 bg-red-50 rounded-full mb-4">
             <AlertTriangle className="h-8 w-8 text-red-500" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Payment Required</h1>
-          <p className="text-gray-500">Your website is currently in unpaid status</p>
+          <p className="text-muted-foreground">Your website is currently in unpaid status</p>
         </div>
         
         <div className="bg-amber-50 p-5 rounded-lg mb-8 border-l-4 border-amber-400">
@@ -121,34 +121,34 @@ export default function UnpaidPage() {
           </h2>
           
           {isLoading ? (
-            <div className="text-center py-8 text-gray-500">Loading timer...</div>
+            <div className="text-center py-8 text-muted-foreground">Loading timer...</div>
           ) : error ? (
             <div className="text-center py-4 text-red-500">{error}</div>
           ) : (
             <div className="flex justify-between items-center bg-gray-50 rounded-lg p-4">
               <div className="flex flex-col items-center">
-                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                <div className="bg-card text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
                   {String(timeLeft.days).padStart(2, '0')}
                 </div>
                 <span className="text-xs mt-2 text-gray-600 font-medium">Days</span>
               </div>
-              <div className="text-gray-300 text-2xl font-light">:</div>
+              <div className="text-muted-foreground text-2xl font-light">:</div>
               <div className="flex flex-col items-center">
-                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                <div className="bg-card text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
                   {String(timeLeft.hours).padStart(2, '0')}
                 </div>
                 <span className="text-xs mt-2 text-gray-600 font-medium">Hours</span>
               </div>
-              <div className="text-gray-300 text-2xl font-light">:</div>
+              <div className="text-muted-foreground text-2xl font-light">:</div>
               <div className="flex flex-col items-center">
-                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                <div className="bg-card text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
                   {String(timeLeft.minutes).padStart(2, '0')}
                 </div>
                 <span className="text-xs mt-2 text-gray-600 font-medium">Minutes</span>
               </div>
-              <div className="text-gray-300 text-2xl font-light">:</div>
+              <div className="text-muted-foreground text-2xl font-light">:</div>
               <div className="flex flex-col items-center">
-                <div className="bg-white text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
+                <div className="bg-card text-red-600 rounded-lg px-4 py-3 font-bold text-2xl shadow-sm border border-gray-100">
                   {String(timeLeft.seconds).padStart(2, '0')}
                 </div>
                 <span className="text-xs mt-2 text-gray-600 font-medium">Seconds</span>
@@ -156,7 +156,7 @@ export default function UnpaidPage() {
             </div>
           )}
           
-          <p className="text-sm text-center text-gray-500 mt-3">
+          <p className="text-sm text-center text-muted-foreground mt-3">
             After this timer expires, the website will be taken down automatically.
           </p>
         </div>
@@ -174,7 +174,7 @@ export default function UnpaidPage() {
           
           <div className="relative flex items-center justify-center">
             <div className="border-t border-gray-200 w-full absolute"></div>
-            <span className="relative bg-white px-4 text-sm text-gray-500">OR</span>
+            <span className="relative bg-card px-4 text-sm text-muted-foreground">OR</span>
           </div>
           
           <a 
@@ -187,7 +187,7 @@ export default function UnpaidPage() {
           
         </div>
         
-        <div className="mt-8 text-center text-xs text-gray-500">
+        <div className="mt-8 text-center text-xs text-muted-foreground">
           <p>For any questions or concerns, please contact technical support.</p>
         </div>
       </div>

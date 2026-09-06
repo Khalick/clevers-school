@@ -72,7 +72,7 @@ const DriveService = {
 // Components
 const LoadingSpinner = () => (
     <div className="h-full flex items-center justify-center bg-sky-100 min-h-[50vh]" role="status">
-        <div className="bg-white p-6 rounded-full shadow-xl">
+        <div className="bg-card p-6 rounded-full shadow-xl">
             <Loader2
                 className="h-8 w-8 animate-spin text-blue-600"
                 aria-label="Loading set books"
@@ -93,14 +93,14 @@ const SearchBar = ({
 }) => (
     <div className="relative mt-2 md:mt-0 w-full md:w-auto">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <Search className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
         </div>
         <Input
             type="search"
             placeholder="Search guides & notes..."
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="pl-10 pr-10 w-full md:w-64 bg-white text-black border-gray-300
+            className="pl-10 pr-10 w-full md:w-64 bg-card text-foreground border-input
                        focus:ring-blue-500 focus:border-blue-500"
             aria-label="Search documents"
         />
@@ -110,7 +110,7 @@ const SearchBar = ({
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 aria-label="Clear search"
             >
-                <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                <X className="h-5 w-5 text-muted-foreground hover:text-gray-600" />
             </button>
         )}
     </div>
@@ -128,7 +128,7 @@ const FileCard: React.FC<FileCardProps> = ({ file, onClick }) => {
         <div
             className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-200
                        hover:bg-blue-50 hover:border-blue-300 transition-all duration-200
-                       cursor-pointer shadow-sm hover:shadow-md bg-white
+                       cursor-pointer shadow-sm hover:shadow-md bg-card
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             onClick={() => onClick(file)}
             onKeyDown={handleKeyPress}
@@ -220,7 +220,7 @@ export default function SetBooksPage() {
             <div className="flex-1 overflow-y-auto px-4 py-8">
                 <div className="relative max-w-4xl mx-auto">
 
-                    <Card className="shadow-xl border-gray-200 bg-white">
+                    <Card className="shadow-xl border-gray-200 bg-card">
                         <CardHeader className="flex flex-col md:flex-row items-center justify-between border-b border-gray-100 p-6 bg-blue-600 rounded-t-xl text-white">
                             <CardTitle className="text-2xl font-bold flex items-center gap-2">
                                 <BookOpen className="h-6 w-6" />
@@ -247,7 +247,7 @@ export default function SetBooksPage() {
 
                                 return (
                                     <div key={folderId} className="mb-8 last:mb-0">
-                                        <h3 className="text-lg font-bold text-blue-800 mb-3 border-b border-blue-100 pb-2">
+                                        <h3 className="text-lg font-bold text-foreground mb-3 border-b border-blue-100 pb-2">
                                             {folderName}
                                         </h3>
                                         <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-2">
@@ -264,7 +264,7 @@ export default function SetBooksPage() {
                             })}
 
                             {!loading && !error && Object.keys(filteredGroups).length === 0 && (
-                                <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                <div className="text-center py-12 text-muted-foreground bg-gray-50 rounded-lg border border-dashed border-input">
                                     {searchQuery
                                         ? `No guides found matching "${searchQuery}"`
                                         : "No study guides available at the moment."

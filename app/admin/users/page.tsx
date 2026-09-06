@@ -115,21 +115,21 @@ export default function AdminDashboard() {
                         </h1>
                         <p className="text-slate-500 mt-1">Manage user subscriptions manually</p>
                     </div>
-                    <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-slate-200">
+                    <div className="bg-card px-4 py-2 rounded-lg shadow-sm border border-slate-200">
                         <span className="text-sm font-medium text-slate-600">Logged in as: </span>
                         <span className="text-sm font-bold text-emerald-600">{session?.user?.email}</span>
                     </div>
                 </div>
 
                 <Card className="border-slate-200 shadow-lg">
-                    <CardHeader className="bg-white border-b border-slate-100 pb-4">
+                    <CardHeader className="bg-card border-b border-slate-100 pb-4">
                         <div className="flex flex-col md:flex-row justify-between gap-4">
                             <CardTitle className="text-xl text-slate-700 self-center">Registered Users ({users.length})</CardTitle>
                             <div className="relative w-full md:w-96">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                                 <Input
                                     placeholder="Search by name or email..."
-                                    className="pl-9 bg-slate-50 border-slate-200 focus:ring-emerald-500"
+                                    className="pl-9 bg-slate-50 border-slate-200 focus:ring-ring"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />

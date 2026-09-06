@@ -72,7 +72,7 @@ const DriveService = {
 
 // Components
 const LoadingSpinner = () => (
-    <div className="h-full flex items-center justify-center bg-amber-300 min-h-[50vh]" role="status">
+    <div className="h-full flex items-center justify-center bg-background min-h-[50vh]" role="status">
         <div className="bg-gray-800/80 p-6 rounded-full shadow-xl">
             <Loader2
                 className="h-8 w-8 animate-spin text-emerald-500"
@@ -94,15 +94,15 @@ const SearchBar = ({
 }) => (
     <div className="relative mt-2 md:mt-0 w-full md:w-auto">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <Search className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
         </div>
         <Input
             type="search"
             placeholder="Search assignments..."
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="pl-10 pr-10 w-full md:w-64 bg-white text-black border-gray-300
-                       focus:ring-emerald-500 focus:border-emerald-500"
+            className="pl-10 pr-10 w-full md:w-64 bg-card text-foreground border-input
+                       focus:ring-ring focus:border-primary"
             aria-label="Search documents"
         />
         {value && (
@@ -111,7 +111,7 @@ const SearchBar = ({
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 aria-label="Clear search"
             >
-                <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                <X className="h-5 w-5 text-muted-foreground hover:text-gray-600" />
             </button>
         )}
     </div>
@@ -127,10 +127,10 @@ const FileCard: React.FC<FileCardProps> = ({ file, onClick }) => {
 
     return (
         <div
-            className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700
-                       hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
-                       cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            className="group flex items-center p-3 md:p-4 rounded-lg border border-border
+                       hover:bg-accent hover:border-primary/40 transition-all duration-200
+                       cursor-pointer shadow-sm hover:shadow-md bg-card backdrop-blur-sm
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={() => onClick(file)}
             onKeyDown={handleKeyPress}
             role="button"
@@ -138,12 +138,12 @@ const FileCard: React.FC<FileCardProps> = ({ file, onClick }) => {
             aria-label={`Open ${file.name}`}
         >
             <FileText
-                className="h-5 w-5 md:h-6 md:w-6 text-blue-800 group-hover:text-emerald-400
+                className="h-5 w-5 md:h-6 md:w-6 text-foreground group-hover:text-primary
                           transition-colors mr-3 flex-shrink-0"
                 aria-hidden="true"
             />
             <div className="flex-1 min-w-0">
-                <h3 className="text-sm md:text-base font-medium text-blue-900 group-hover:text-emerald-300 truncate">
+                <h3 className="text-sm md:text-base font-medium text-blue-900 group-hover:text-primary line-clamp-2 break-words">
                     {file.name}
                 </h3>
             </div>
@@ -222,7 +222,7 @@ export default function SecondaryAssignments() {
             <div className="flex-1 overflow-y-auto px-4 py-8">
                 <div className="relative max-w-4xl mx-auto">
 
-                    <Card className="shadow-2xl border-gray-200 bg-white/90 backdrop-blur">
+                    <Card className="shadow-sm border-gray-200 bg-white/90 backdrop-blur">
                         <CardHeader className="flex flex-col md:flex-row items-center justify-between border-b border-gray-100 p-6 bg-emerald-50 rounded-t-xl">
                             <CardTitle className="text-2xl font-bold text-emerald-800 text-center md:text-left mb-4 md:mb-0">
                                 SECONDARY SCHOOL ASSIGNMENTS
@@ -265,7 +265,7 @@ export default function SecondaryAssignments() {
                             })}
 
                             {!loading && !error && Object.keys(filteredGroups).length === 0 && (
-                                <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                <div className="text-center py-12 text-muted-foreground bg-gray-50 rounded-lg border border-dashed border-input">
                                     {searchQuery
                                         ? `No assignments found matching "${searchQuery}"`
                                         : "No assignments available at the moment."

@@ -228,11 +228,11 @@ const DocumentPage = () => {
         <div className="container mx-auto px-4 py-6 bg-orange-200">
             <div className="relative max-w-2xl mx-auto">
                 <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 hidden pointer-events-none"></div>
 
-                <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
+                <Card className="shadow-sm backdrop-blur-sm border border-border rounded-xl relative">
                     <CardHeader className="space-y-2">
-                        <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center font-bold">
+                        <CardTitle className="text-xl md:text-2xl text-foreground text-center font-bold">
                             {fileData?.name || 'Document Not Found'}
                         </CardTitle>
                     </CardHeader>

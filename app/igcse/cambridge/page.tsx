@@ -10,7 +10,7 @@ interface LevelComponentProps {
 }
 
 const LevelSection: React.FC<LevelComponentProps> = ({ children }) => (
-  <div className="w-full p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+  <div className="w-full p-4 rounded-lg bg-card shadow-sm hover:shadow-md transition-shadow duration-200">
     {children}
   </div>
 );

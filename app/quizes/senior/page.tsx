@@ -11,7 +11,7 @@ const Home: React.FC = () => {
               href="/quizes/senior/grade-9"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
               GRADE 9
             </Link>
             <Link
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
               href="/quizes/senior/grade-10"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
             GRADE 10
             </Link>
             <Link
@@ -27,7 +27,7 @@ const Home: React.FC = () => {
             href="/quizes/senior/grade-11"
             className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
           >
-              <BookOpen size={16} className="text-blue-500" />
+              <BookOpen size={16} className="text-foreground" />
           GRADE 11
           </Link>
           <Link
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
             href="/quizes/senior/grade-12"
             className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
           >
-              <BookOpen size={16} className="text-blue-500" />
+              <BookOpen size={16} className="text-foreground" />
           GRADE 12
           </Link>
     </div>

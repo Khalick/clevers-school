@@ -83,7 +83,7 @@ export default function Page() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="bg-white rounded-lg shadow-md border border-gray-200">
+            <div className="bg-card rounded-lg shadow-md border border-gray-200">
                 <div className="border-b border-gray-200 bg-gray-50 p-4 flex flex-col md:flex-row justify-between items-center rounded-t-lg">
                     <h1 className="text-2xl font-bold text-emerald-600 mb-4 md:mb-0">
                         Grade 3 Weekly Quizzes
@@ -92,7 +92,7 @@ export default function Page() {
                     {/* Search Input */}
                     <div className="relative w-full md:w-64">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <Search className="w-4 h-4 text-gray-400" />
+                            <Search className="w-4 h-4 text-muted-foreground" />
                         </div>
                         <input
                             type="text"
@@ -102,15 +102,15 @@ export default function Page() {
                                 setSearchQuery(e.target.value);
                                 setCurrentPage(1); // Reset to first page on search
                             }}
-                            className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md 
-                                      focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            className="w-full pl-10 pr-10 py-2 border border-input rounded-md 
+                                      focus:outline-none focus:ring-2 focus:ring-ring"
                         />
                         {searchQuery && (
                             <button 
                                 onClick={() => setSearchQuery('')}
                                 className="absolute inset-y-0 right-0 flex items-center pr-3"
                             >
-                                <X className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                                <X className="w-4 h-4 text-muted-foreground hover:text-gray-600" />
                             </button>
                         )}
                     </div>
@@ -126,11 +126,11 @@ export default function Page() {
                                     className="flex items-center p-3 rounded-md border border-gray-200 
                                              hover:bg-gray-50 hover:border-emerald-500 transition-all cursor-pointer"
                                 >
-                                    <FileText className="text-gray-500 mr-3 h-5 w-5" />
+                                    <FileText className="text-muted-foreground mr-3 h-5 w-5" />
                                     <div>
                                         <h3 className="font-medium text-gray-800">{file.name}</h3>
                                         {file.lastModified && (
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-muted-foreground">
                                                 Last modified: {new Date(file.lastModified).toLocaleDateString()}
                                             </p>
                                         )}
@@ -154,7 +154,7 @@ export default function Page() {
                                 disabled={currentPage === 1}
                                 className={`flex items-center px-3 py-1 rounded ${
                                     currentPage === 1 
-                                        ? 'text-gray-400 cursor-not-allowed' 
+                                        ? 'text-muted-foreground cursor-not-allowed' 
                                         : 'text-emerald-600 hover:bg-emerald-50'
                                 }`}
                             >
@@ -171,7 +171,7 @@ export default function Page() {
                                 disabled={currentPage === totalPages}
                                 className={`flex items-center px-3 py-1 rounded ${
                                     currentPage === totalPages 
-                                        ? 'text-gray-400 cursor-not-allowed' 
+                                        ? 'text-muted-foreground cursor-not-allowed' 
                                         : 'text-emerald-600 hover:bg-emerald-50'
                                 }`}
                             >

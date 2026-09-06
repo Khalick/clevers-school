@@ -64,7 +64,7 @@ const DriveService = {
 
 // Components
 const LoadingSpinner = () => (
-    <div className="h-full flex items-center justify-center bg-amber-300" role="status">
+    <div className="h-full flex items-center justify-center bg-background" role="status">
         <div className="bg-gray-800/80 p-6 rounded-full shadow-xl">
             <Loader2
                 className="h-8 w-8 animate-spin text-emerald-500"
@@ -86,15 +86,15 @@ const SearchBar = ({
 }) => (
     <div className="relative mt-2 md:mt-0">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <Search className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
         </div>
         <Input
             type="search"
             placeholder="Search documents..."
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="pl-10 pr-10 w-full md:w-64 bg-white text-black border-gray-300
-                       focus:ring-emerald-500 focus:border-emerald-500"
+            className="pl-10 pr-10 w-full md:w-64 bg-card text-foreground border-input
+                       focus:ring-ring focus:border-primary"
             aria-label="Search documents"
         />
         {value && (
@@ -103,7 +103,7 @@ const SearchBar = ({
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 aria-label="Clear search"
             >
-                <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                <X className="h-5 w-5 text-muted-foreground hover:text-gray-600" />
             </button>
         )}
     </div>
@@ -119,10 +119,10 @@ const FileCard: React.FC<FileCardProps> = ({ file, onClick }) => {
 
     return (
         <div
-            className="group flex items-center p-3 md:p-4 rounded-lg border border-gray-700
-                       hover:bg-gray-700/50 hover:border-emerald-600/50 transition-all duration-200
-                       cursor-pointer shadow-sm hover:shadow-md bg-white backdrop-blur-sm
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            className="group flex items-center p-3 md:p-4 rounded-lg border border-border
+                       hover:bg-accent hover:border-primary/40 transition-all duration-200
+                       cursor-pointer shadow-sm hover:shadow-md bg-card backdrop-blur-sm
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={() => onClick(file)}
             onKeyDown={handleKeyPress}
             role="button"
@@ -130,16 +130,16 @@ const FileCard: React.FC<FileCardProps> = ({ file, onClick }) => {
             aria-label={`Open ${file.name}`}
         >
             <FileText
-                className="h-5 w-5 md:h-6 md:w-6 text-gray-500 group-hover:text-emerald-400
+                className="h-5 w-5 md:h-6 md:w-6 text-muted-foreground group-hover:text-primary
                           transition-colors mr-3 flex-shrink-0"
                 aria-hidden="true"
             />
             <div className="flex-1 min-w-0">
-                <h3 className="text-sm md:text-base font-medium text-blue-800 text-wrap group-hover:text-emerald-300 truncate">
+                <h3 className="text-sm md:text-base font-medium text-foreground group-hover:text-primary line-clamp-2 break-words">
                     {file.name}
                 </h3>
                 {file.lastModified && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                         Last modified: {new Date(file.lastModified).toLocaleDateString()}
                     </p>
                 )}
@@ -201,18 +201,18 @@ export default function KCSE2013() {
 
     return (
         <div className="flex flex-col h-full overflow-hidden w-full">
-            <div className="flex-1 overflow-y-auto px-4 py-8 bg-amber-200">
+            <div className="flex-1 overflow-y-auto px-4 py-8 bg-background">
                 <div className="relative max-w-3xl mx-auto">
                     <div className="absolute inset-0 bg-grid-pattern opacity-10" aria-hidden="true" />
                     <div
-                        className="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent"
+                        className="absolute inset-0 hidden"
                         aria-hidden="true"
                     />
 
-                    <Card className="shadow-2xl backdrop-blur-sm border border-gray-700 rounded-xl relative">
+                    <Card className="shadow-sm backdrop-blur-sm border border-border rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center
-                                             md:justify-between p-4 md:p-6 border-b border-gray-700">
-                            <CardTitle className="text-xl md:text-2xl text-emerald-400 text-center
+                                             md:justify-between p-4 md:p-6 border-b border-border">
+                            <CardTitle className="text-xl md:text-2xl text-foreground text-center
                                                 md:text-left font-bold">
                                 2013 KCSE EXAMINATION PAST PAPERS
                             </CardTitle>
@@ -251,8 +251,8 @@ export default function KCSE2013() {
                             )}
 
                             {!error && filteredMaterial.length === 0 && (
-                                <div className="text-center py-8 text-red-400 bg-white rounded-lg
-                                              border border-gray-700" role="alert">
+                                <div className="text-center py-8 text-muted-foreground bg-card rounded-lg
+                                              border border-border" role="alert">
                                     {searchQuery
                                         ? `No documents found matching "${searchQuery}"`
                                         : "No documents available at the moment"

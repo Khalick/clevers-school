@@ -11,7 +11,7 @@ const ThesisResearchSection: React.FC = () => {
               href="/research/essays"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
               ESSAYS
             </Link>
             <Link
@@ -19,7 +19,7 @@ const ThesisResearchSection: React.FC = () => {
               href="/research/papers"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
              RESEARCH PAPERS
             </Link>
             <Link
@@ -27,7 +27,7 @@ const ThesisResearchSection: React.FC = () => {
               href="/research/thesis"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
              THESIS
             </Link>
             <Link
@@ -35,7 +35,7 @@ const ThesisResearchSection: React.FC = () => {
               href="/research/abstracts"
               className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
             >
-                <BookOpen size={16} className="text-blue-500" />
+                <BookOpen size={16} className="text-foreground" />
              ABSTRACTS
             </Link>
     </div>

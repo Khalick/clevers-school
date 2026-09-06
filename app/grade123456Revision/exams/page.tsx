@@ -28,7 +28,7 @@ const GradeNavigation = () => {
                 key={grade.id}
                 className="block"
               >
-                <div className="p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200 hover:bg-gray-50">
+                <div className="p-4 border rounded-lg bg-card shadow-sm hover:shadow-md transition-shadow duration-200 hover:bg-gray-50">
                   <h2 className="text-lg font-semibold text-center text-gray-800">
                     {grade.title}
                   </h2>
