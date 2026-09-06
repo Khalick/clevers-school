@@ -188,7 +188,7 @@ const Footer = () => {
                                 <span className="text-xs mt-1">YouTube</span>
                             </a>
                             <a
-                                href="#"
+                                href="https://clevers.co.ke/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-gray-800 hover:bg-purple-600 transition-colors duration-200 p-3 rounded-lg flex flex-col items-center"
@@ -198,7 +198,7 @@ const Footer = () => {
                                 <span className="text-xs mt-1">Instagram</span>
                             </a>
                             <a
-                                href="#"
+                                href="https://clevers.co.ke/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-gray-800 hover:bg-blue-400 transition-colors duration-200 p-3 rounded-lg flex flex-col items-center"

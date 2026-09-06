@@ -23,9 +23,10 @@ import {
  * sidebars, which resolved against the current pathname and silently misrouted at
  * depth >= 2. Every href here is absolute.
  *
- * Every destination that existed in those three components is present below.
- * Routes with no page yet are marked `comingSoon` and render as a disabled item
- * with a "Soon" badge instead of a link that 404s.
+ * Every destination that existed in those three components is reachable below,
+ * and every entry resolves to a real page. Where the original advertised a route
+ * that does not exist (the ten /pre-primary/* links, /syllabus), the entry now
+ * points at the closest material that does exist and is labelled for it.
  */
 
 export type Track = 'cbc' | 'kcse' | 'igcse' | 'college';
@@ -33,8 +34,6 @@ export type Track = 'cbc' | 'kcse' | 'igcse' | 'college';
 export interface NavItem {
     title: string;
     href: string;
-    /** No route exists yet — rendered disabled rather than as a broken link. */
-    comingSoon?: boolean;
 }
 
 export interface NavGroup {
@@ -79,7 +78,9 @@ export const navGroups: NavGroup[] = [
             { title: 'Holiday Assignments', href: '/assignments' },
             { title: 'Life Skills Notes', href: '/lifeskills' },
             { title: 'Setbook Guides (Kiswahili & English)', href: '/setbook-guides' },
-            { title: 'Form 1–4 Syllabus', href: '/syllabus', comingSoon: true },
+            // /syllabus has no route. Schemes of work are the syllabus broken
+            // down by term and week, so that is the nearest real destination.
+            { title: 'Form 1–4 Syllabus & Schemes of Work', href: '/schemes/form1To4' },
         ],
     },
     {
@@ -139,20 +140,18 @@ export const navGroups: NavGroup[] = [
         title: 'PP1 & PP2',
         icon: HeartHandshake,
         track: 'cbc',
+        // The old sidebars advertised ten /pre-primary/* destinations and every
+        // one of them 404'd — there is no app/pre-primary directory. These are
+        // the pre-primary resources that actually exist, labelled for what they
+        // are, so each entry lands on real documents.
         items: [
-            { title: 'PP1 Resources', href: '/pre-primary/pp1', comingSoon: true },
-            { title: 'PP2 Resources', href: '/pre-primary/pp2', comingSoon: true },
-            { title: 'Curriculum Design Materials', href: '/pre-primary/design-materials', comingSoon: true },
-            { title: 'PP1 & PP2 Examinations', href: '/pre-primary/exams', comingSoon: true },
-            { title: 'PP1 & PP2 Revision Materials', href: '/pre-primary/revision-materials', comingSoon: true },
-            { title: 'PP1 Notes', href: '/pre-primary/pp1/notes', comingSoon: true },
-            { title: 'PP1 Mid-term & End-term Exams', href: '/pre-primary/pp1/exams', comingSoon: true },
-            { title: 'PP2 Notes', href: '/pre-primary/pp2/notes', comingSoon: true },
-            { title: 'PP2 Schemes of Work', href: '/pre-primary/pp2/schemes', comingSoon: true },
-            { title: 'PP2 Mid-term & End-term Exams', href: '/pre-primary/pp2/exams', comingSoon: true },
             { title: 'PP1 & PP2 Lesson Plans', href: '/lesson-plans/preprimary' },
+            { title: 'PP1 Lesson Plans', href: '/lesson-plans/pp1' },
+            { title: 'PP2 Lesson Plans', href: '/lesson-plans/pp2' },
             { title: 'PP1 Schemes of Work', href: '/schemes/pp1' },
             { title: 'PP2 Schemes of Work', href: '/schemes/pp2' },
+            { title: 'PP1 & PP2 Exams (mid-term & end-term)', href: '/quizes/elementary' },
+            { title: 'CBC Curriculum Designs', href: '/grade1to6Resources/curriculum' },
         ],
     },
     {
@@ -270,6 +269,8 @@ export const segmentLabels: Record<string, string> = {
     'lifeskills': 'Life Skills',
     'schemes': 'Schemes of Work',
     'document': 'Document',
+    'privacy-policy': 'Privacy Policy',
+    'terms-of-service': 'Terms of Service',
     'subscribe': 'Subscribe',
     'subscription': 'Subscription',
     'payment': 'Payment',
@@ -330,6 +331,83 @@ export function titleForPath(pathname: string): string {
     const segments = pathname.split('/').filter(Boolean);
     if (segments.length === 0) return 'Study Resources';
     return segments.map(labelForSegment).join(' · ');
+}
+
+/* ------------------------------------------------------------------ */
+/* Related resources — used when a folder returns nothing               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Suggestions to offer when a page has no documents to show.
+ *
+ * The goal is that a reader never reaches a dead end: if this folder is empty,
+ * or the fetch failed, point them at material that genuinely exists nearby.
+ *
+ * Three sources, in order of closeness:
+ *   1. Siblings — /topic-tests/Biology/form-3 offers form-1, form-2, form-4;
+ *      /kcse/2019 offers 2018 and 2020. This is the "Form 3 English can point to
+ *      Form 4 English" case.
+ *   2. The parent section — /kcse/2019 offers /kcse.
+ *   3. The rest of the navigation group this page belongs to.
+ *
+ * Every candidate is checked against the generated route manifest, so a
+ * suggestion can never itself be broken.
+ */
+export function relatedTo(
+    pathname: string,
+    exists: (path: string) => boolean,
+    limit = 6,
+): NavItem[] {
+    const clean = pathname.replace(/\/$/, '') || '/';
+    const segments = clean.split('/').filter(Boolean);
+    const out: NavItem[] = [];
+    const seen = new Set<string>([clean]);
+
+    const push = (href: string, title: string) => {
+        if (out.length >= limit || seen.has(href) || !exists(href)) return;
+        seen.add(href);
+        out.push({ title, href });
+    };
+
+    // 1. Siblings that differ only in their trailing grade / form / year.
+    const last = segments[segments.length - 1] ?? '';
+    const parent = '/' + segments.slice(0, -1).join('/');
+
+    const graded = /^(grade|form|year)-?(\d+)$/i.exec(last);
+    if (graded) {
+        const [, word, num] = graded;
+        const sep = last.includes('-') ? '-' : '';
+        const n = Number(num);
+        // Nearest first: 3 -> 4, 2, 5, 1 …
+        for (const candidate of [n + 1, n - 1, n + 2, n - 2, n + 3, n - 3]) {
+            if (candidate < 1) continue;
+            push(`${parent}/${word}${sep}${candidate}`, labelForSegment(`${word}-${candidate}`));
+        }
+    } else if (/^\d{4}$/.test(last)) {
+        const year = Number(last);
+        for (const candidate of [year - 1, year + 1, year - 2, year + 2, year - 3, year + 3]) {
+            push(`${parent}/${candidate}`, `${candidate}`);
+        }
+    }
+
+    // 2. The parent section.
+    if (segments.length > 1) {
+        push(parent, `All ${labelForSegment(segments[segments.length - 2])}`);
+    }
+
+    // 3. The rest of whichever navigation group owns this page.
+    const owning =
+        navGroups.find((g) => g.items.some((i) => i.href === clean)) ??
+        navGroups.find((g) => g.items.some((i) => clean.startsWith(i.href) && i.href !== '/'));
+
+    for (const item of owning?.items ?? []) push(item.href, item.title);
+
+    // 4. Last resort — the track's own landing pages.
+    if (out.length === 0) {
+        for (const item of primaryNav) push(item.href, item.title);
+    }
+
+    return out;
 }
 
 export interface Crumb {

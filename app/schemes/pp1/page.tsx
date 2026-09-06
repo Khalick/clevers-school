@@ -8,6 +8,7 @@ import { FileText, Loader2, Search, X, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import EmptyResources from '@/app/components/EmptyResources';
 // Constants
 const FOLDER_ID = '1-9lpvL8h_mrDTlJguDo0_dRlpXYE5MVh';
 const API_ENDPOINT = '/api/drive/files';
@@ -247,13 +248,7 @@ export default function PP1Schemes() {
                             )}
 
                             {!error && filteredMaterial.length === 0 && (
-                                <div className="text-center py-8 text-muted-foreground bg-card rounded-lg
-                                              border border-border" role="alert">
-                                    {searchQuery
-                                        ? `No documents found matching "${searchQuery}"`
-                                        : "No documents available at the moment"
-                                    }
-                                </div>
+                                <EmptyResources searchQuery={searchQuery} />
                             )}
                         </CardContent>
                     </Card>

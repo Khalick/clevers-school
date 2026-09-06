@@ -24,7 +24,7 @@ const ElementarySchoolSection: React.FC = () => {
             </Link>
             <Link
             
-            href="/elementary/grade-3"
+            href="/quizes/elementary/grade-3"
             className="p-3 text-gray-950 font-semibold bg-slate-100 hover:bg-purple-500 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex items-center gap-2"
           >
               <BookOpen size={16} className="text-foreground" />

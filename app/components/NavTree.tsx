@@ -37,7 +37,7 @@ export default function NavTree({ onNavigate }: NavTreeProps) {
     const pathname = usePathname();
 
     const groupContainsPath = (group: NavGroup) =>
-        group.items.some((i) => !i.comingSoon && pathname.startsWith(i.href) && i.href !== '/');
+        group.items.some((i) => pathname.startsWith(i.href) && i.href !== '/');
 
     // Open the group you are currently inside, plus the defaults.
     const defaultOpen = navGroups
@@ -85,20 +85,6 @@ function NavLeaf({
     pathname: string;
     onNavigate?: () => void;
 }) {
-    // Routes that do not exist yet are shown as disabled with a "Soon" badge
-    // rather than as links that 404. Ten PP1/PP2 destinations and /syllabus were
-    // live links in the old sidebars and every one of them was a dead end.
-    if (item.comingSoon) {
-        return (
-            <span className="flex items-center justify-between gap-2 rounded-md px-2.5 py-2 text-sm text-muted-foreground/70">
-                <span className="min-w-0 leading-snug">{item.title}</span>
-                <span className="shrink-0 rounded border border-border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide">
-                    Soon
-                </span>
-            </span>
-        );
-    }
-
     const active = pathname === item.href;
 
     return (

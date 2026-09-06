@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 
+import EmptyResources from '@/app/components/EmptyResources';
 type FileItem = {
     name: string;
     url: string;
@@ -136,9 +137,7 @@ export default function Page() {
                             </div>
                             
                             {material.length === 0 && (
-                                <div className="text-center py-8 text-muted-foreground bg-muted rounded-lg border border-border">
-                                    No documents available at the moment
-                                </div>
+                                <EmptyResources />
                             )}
                             {material.length > itemsPerPage && (
                                 <PaginationControls

@@ -47,6 +47,12 @@ const SUBSCRIPTION_AMOUNT = 1005;
 interface Item {
     label: string;
     href?: string;
+    /**
+     * Set when this topic has no section of its own yet and the link lands on
+     * the nearest related material instead. Shown to the reader so the
+     * destination is never a surprise.
+     */
+    via?: string;
 }
 
 interface Section {
@@ -167,15 +173,38 @@ const sections: Section[] = [
         ],
     },
     {
-        title: 'In preparation',
+        // These five had no section of their own and were rendered as inert grey
+        // "(Coming Soon)" text. Each now opens the closest material that exists,
+        // with the destination named so nobody is misled about where they land.
+        title: 'Junior secondary assignments & assessment',
         icon: ClipboardList,
-        accent: 'text-muted-foreground',
+        accent: 'text-track-cbc',
         items: [
-            { label: 'Grade 9 assignments' },
-            { label: 'Grade 8 assignments' },
-            { label: 'Grade 8 assessment and scoresheet' },
-            { label: '2024 Grade 7 JSS assignments, term 1, 2, 3' },
-            { label: 'Grade 7 assessment and scoresheet' },
+            {
+                label: 'Grade 9 assignments',
+                href: '/cbc/holiday-assignment',
+                via: 'CBC holiday assignments',
+            },
+            {
+                label: 'Grade 8 assignments',
+                href: '/cbc/holiday-assignment',
+                via: 'CBC holiday assignments',
+            },
+            {
+                label: '2024 Grade 7 JSS assignments, term 1, 2, 3',
+                href: '/cbc/holiday-assignment',
+                via: 'CBC holiday assignments',
+            },
+            {
+                label: 'Grade 8 assessment and scoresheet',
+                href: '/grade78Resources',
+                via: 'Grade 7–9 resources',
+            },
+            {
+                label: 'Grade 7 assessment and scoresheet',
+                href: '/grade78Resources/curriculum-grade7',
+                via: 'Grade 7 curriculum designs',
+            },
         ],
     },
 ];
@@ -259,30 +288,28 @@ export default function Home() {
                     </h2>
                     <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
                         {items.map((item) => (
-                            <li key={item.label}>
-                                {item.href ? (
-                                    <Link
-                                        href={item.href}
-                                        className="group flex min-h-[48px] items-center gap-3 px-4 py-3 text-[15px] leading-snug transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
-                                    >
-                                        <FileText
-                                            className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary"
-                                            aria-hidden="true"
-                                        />
-                                        <span className="min-w-0 flex-1">{item.label}</span>
-                                        <ArrowRight
-                                            className="h-4 w-4 shrink-0 -translate-x-1 text-primary opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
-                                            aria-hidden="true"
-                                        />
-                                    </Link>
-                                ) : (
-                                    <span className="flex min-h-[48px] items-center justify-between gap-3 px-4 py-3 text-[15px] leading-snug text-muted-foreground/70">
+                            <li key={`${item.label}-${item.href}`}>
+                                <Link
+                                    href={item.href as string}
+                                    className="group flex min-h-[48px] items-center gap-3 px-4 py-3 text-[15px] leading-snug transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                                >
+                                    <FileText
+                                        className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary"
+                                        aria-hidden="true"
+                                    />
+                                    <span className="min-w-0 flex-1">
                                         {item.label}
-                                        <span className="shrink-0 rounded border border-border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide">
-                                            Soon
-                                        </span>
+                                        {item.via && (
+                                            <span className="block text-xs text-muted-foreground">
+                                                Opens {item.via}
+                                            </span>
+                                        )}
                                     </span>
-                                )}
+                                    <ArrowRight
+                                        className="h-4 w-4 shrink-0 -translate-x-1 text-primary opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                                        aria-hidden="true"
+                                    />
+                                </Link>
                             </li>
                         ))}
                     </ul>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Loader2 } from "lucide-react";
 
+import EmptyResources from '@/app/components/EmptyResources';
 // Types
 type FileItem = {
     id: string;
@@ -106,9 +107,7 @@ export default function Form3() {
                             </div>
 
                             {material.length === 0 && (
-                                <div className="text-center py-8 text-muted-foreground bg-muted rounded-lg border border-border">
-                                    No documents available at the moment
-                                </div>
+                                <EmptyResources />
                             )}
                         </CardContent>
                     </Card>

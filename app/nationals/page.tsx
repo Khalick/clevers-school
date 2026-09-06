@@ -26,21 +26,21 @@ export default function NationalSchoolsMocks() {
                         </Link>
                     </li>
                     <li>
-                        <Link href='/nationalS/mangu'
+                        <Link href='/nationals/mangu'
                             className='text-gray-950'>
                              MANGU HIGH SCHOOL MOCK
                             
                         </Link>
                     </li>
                     <li>
-                        <Link href='/nationals/aliance'
+                        <Link href='/nationals/alliance'
                             className='text-gray-950'>
                             ALLIANCE HIGH SCHOOL MOCK
                             
                         </Link>
                     </li>
                     <li>
-                        <Link href='/nationals/aliance-girls'
+                        <Link href='/nationals/alliance-girls'
                             className='text-gray-950'>
                             ALLIANCE GIRLS HIGH SCHOOL MOCK
                             

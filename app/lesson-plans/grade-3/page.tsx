@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Loader2, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+import EmptyResources from '@/app/components/EmptyResources';
 // Types
 type FileItem = {
     id: string;
@@ -179,12 +180,7 @@ export default function Grade3Plan() {
                             ))}
 
                             {filteredMaterial.length === 0 && (
-                                <div className="text-center py-8 text-muted-foreground bg-muted rounded-lg border border-border">
-                                    {searchQuery
-                                        ? `No documents found matching "${searchQuery}"`
-                                        : "No documents available at the moment"
-                                    }
-                                </div>
+                                <EmptyResources searchQuery={searchQuery} />
                             )}
                         </CardContent>
                     </Card>

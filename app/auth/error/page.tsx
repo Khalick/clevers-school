@@ -40,7 +40,7 @@ export default function AuthError() {
       title: "Email Not Verified",
       description: "Your email address has not been verified. Please check your inbox for a verification email.",
       icon: <Mail className="h-12 w-12 text-foreground" />,
-      action: { text: "Resend Verification", href: "/auth/verify-email" },
+      action: { text: "Back to sign in", href: "/auth/signin" },
     },
     "authentication-error": {
       title: "Authentication Error",
@@ -125,8 +125,8 @@ export default function AuthError() {
                 </ul>
               </div>
               <div className="flex justify-center">
-                <Link href="/auth/verify-email">
-                  <Button size="sm">Resend Verification Email</Button>
+                <Link href="/auth/signin">
+                  <Button size="sm">Back to sign in</Button>
                 </Link>
               </div>
             </div>

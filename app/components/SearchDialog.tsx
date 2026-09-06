@@ -60,7 +60,7 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
                     (&quot;Form 3&quot;) or a year (&quot;2019&quot;).
                 </CommandEmpty>
                 {navGroups.map((group) => {
-                    const items = group.items.filter((i) => !i.comingSoon);
+                    const items = group.items;
                     if (items.length === 0) return null;
                     return (
                         <CommandGroup key={group.id} heading={group.title}>
