@@ -1,3 +1,14 @@
+/**
+ * Google Drive document search UI.
+ *
+ * NOT currently mounted. AppLayout used to render this as `<SearchBar folderId='' />`
+ * above every page, and app/api/drive/search/route.ts returns 400 on an empty
+ * folderId — so it errored on every query across all 225 routes. Retained
+ * deliberately, not dead code: it works correctly when given a real folder id, and
+ * it is the UI for the pending global-search fix, which needs a Drive folder
+ * registry (see the bug report). The header search is currently a navigation
+ * palette (SearchDialog.tsx), which needs no API.
+ */
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';

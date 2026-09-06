@@ -212,10 +212,6 @@ export default function Grade1To6HolidayAssignment() {
                     <Card className="shadow-sm backdrop-blur-sm border border-border rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center
                                              md:justify-between p-4 md:p-6 border-b border-border">
-                            <CardTitle className="text-xl md:text-2xl text-foreground text-center
-                                                md:text-left font-bold">
-                               GRADE 1 TO 6 HOLIDAY ASSIGNMENT
-                            </CardTitle>
                             <SearchBar
                                 value={searchQuery}
                                 onChange={setSearchQuery}

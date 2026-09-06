@@ -125,9 +125,6 @@ export default function Grade7Plan() {
 
                     <Card className="shadow-sm backdrop-blur-sm border border-border rounded-xl relative">
                         <CardHeader className="space-y-2 md:space-y-0 md:flex md:flex-row md:items-center md:justify-between p-4 md:p-6 border-b border-border">
-                            <CardTitle className="text-xl md:text-2xl text-foreground text-center md:text-left font-bold">
-                                GRADE 7 LESSON PLANS
-                            </CardTitle>
                             <div className="relative mt-2 md:mt-0">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Search className="h-5 w-5 text-muted-foreground" />

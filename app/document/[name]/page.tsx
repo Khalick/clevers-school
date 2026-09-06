@@ -231,11 +231,6 @@ const DocumentPage = () => {
                 <div className="absolute inset-0 hidden pointer-events-none"></div>
 
                 <Card className="shadow-sm backdrop-blur-sm border border-border rounded-xl relative">
-                    <CardHeader className="space-y-2">
-                        <CardTitle className="text-xl md:text-2xl text-foreground text-center font-bold">
-                            {fileData?.name || 'Document Not Found'}
-                        </CardTitle>
-                    </CardHeader>
                     <CardContent className="space-y-4">
                         {error && <ErrorDisplay message={error} />}
                         {!session ? (

@@ -1,108 +1,163 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 
-// Lazy load heavy components with loading skeletons
-const NavBar = dynamic(() => import('./Navbar'), { ssr: false });
-const LeftBar = dynamic(() => import('./LeftBar'), {
-    ssr: false,
-    loading: () => <div className="h-full animate-pulse bg-gray-100" />
-});
-const RightBar = dynamic(() => import('./RightBar'), {
-    ssr: false,
-    loading: () => <div className="h-full animate-pulse bg-gray-100" />
-});
-const SearchBar = dynamic(() => import('./SearchBar'), {
-    ssr: false,
-    loading: () => <div className="h-10 animate-pulse bg-gray-100 rounded" />
-});
+import SiteHeader from './SiteHeader';
+import NavTree from './NavTree';
+import Breadcrumbs from './Breadcrumbs';
+import SearchDialog from './SearchDialog';
+import SubscriptionBanner from './SubscriptionBanner';
+import { titleForPath, trackForPath } from '@/lib/navigation';
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+} from '@/components/ui/sheet';
+
 const Footer = dynamic(() => import('./Footer'), { ssr: false });
 const MobileBottomNav = dynamic(() => import('./MobileBottomNav'), { ssr: false });
 
-// Types
 interface AppLayoutProps {
     children: React.ReactNode;
 }
 
-// Lightweight fallback components
-const NavBarFallback = () => <div className="h-12 bg-green-700" />;
+/** Left border colour of the page header, by curriculum track. */
+const trackBorder: Record<string, string> = {
+    cbc: 'border-l-track-cbc',
+    kcse: 'border-l-track-kcse',
+    igcse: 'border-l-track-igcse',
+    college: 'border-l-track-college',
+};
 
+/**
+ * Application shell. Wraps every route except /unpaid.
+ *
+ * Replaces a layout that put, above every page's first word: a 3-row 18-button
+ * navbar, a permanently EMPTY 96px orange banner, a green bar hardcoded to read
+ * "KCSE REVISION EDUCATION MATERIALS" (on IGCSE, Grade 1 CBC, /auth/signin and
+ * /admin/users alike), and a search box that returned an error for every query.
+ * Content was pinned to ~576px while two sidebars took 50% of the screen and
+ * vanished entirely below 1024px.
+ *
+ * Now: one header, breadcrumbs, a 260px rail, and content up to 880px. The rail's
+ * full inventory is reachable on phones through the sheet — nothing is desktop-only.
+ */
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-    // Get the current pathname
     const pathname = usePathname();
+    const [navOpen, setNavOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
 
-    // Check if current route is "/unpaid"
-    const isUnpaidRoute = pathname === '/unpaid';
+    // Routes that supply their own full-page composition. Previously only
+    // /unpaid escaped the shell, so sign-in, checkout and the admin table each
+    // rendered a viewport-tall centred card *inside* a 576px column that already
+    // had a green "KCSE REVISION" banner above it.
+    const isBareRoute =
+        pathname === '/unpaid' ||
+        pathname.startsWith('/auth') ||
+        pathname.startsWith('/payment') ||
+        pathname.startsWith('/subscription') ||
+        pathname === '/subscribe' ||
+        pathname.startsWith('/admin');
 
-    // If we're on the unpaid route, render children without the layout
-    if (isUnpaidRoute) {
-        return <>{children}</>;
+    if (isBareRoute) {
+        return (
+            <div className="min-h-screen bg-background">
+                {pathname !== '/unpaid' && (
+                    <SiteHeader
+                        onOpenNav={() => setNavOpen(true)}
+                        onOpenSearch={() => setSearchOpen(true)}
+                    />
+                )}
+                {children}
+                <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+                <MobileNavSheet open={navOpen} onOpenChange={setNavOpen} />
+            </div>
+        );
     }
 
-    // Otherwise, render the full layout
+    const track = trackForPath(pathname);
+    const isHome = pathname === '/';
+
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
-            {/* Main Layout */}
-            <main className="flex flex-col flex-1 max-w-screen-xl mx-auto w-full px-4 md:px-6 lg:px-8 border-x border-gray-200">
-                {/* Navigation */}
-                <nav className="w-full bg-white shadow-sm sticky top-0 z-10">
-                    <Suspense fallback={<NavBarFallback />}>
-                        <NavBar />
-                    </Suspense>
-                </nav>
+        <div className="flex min-h-screen flex-col bg-background">
+            <SiteHeader
+                onOpenNav={() => setNavOpen(true)}
+                onOpenSearch={() => setSearchOpen(true)}
+            />
 
-                {/* Banner */}
-                <div className="w-full bg-orange-50 shadow-sm">
-                    <div className="h-16 mx-4 my-4 bg-white rounded shadow-inner border border-gray-200" />
-                </div>
-
-                {/* Content Grid */}
-                <div className="flex-1 py-4 w-full">
-                    <div className="flex flex-col lg:flex-row gap-4">
-                        {/* Left Sidebar */}
-                        <aside className="hidden lg:block w-full lg:w-[25%] bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                            <div className="h-full">
-                                <LeftBar />
-                            </div>
-                        </aside>
-
-                        {/* Main Content */}
-                        <main className="flex-1 w-full lg:w-[50%] rounded-lg bg-white shadow-sm overflow-hidden flex flex-col border border-gray-200">
-                            <div className="bg-[#00a651] text-white p-3 font-bold border-b border-gray-200 sticky top-0 z-[5]">
-                                KCSE REVISION EDUCATION MATERIALS
-                            </div>
-                            <div className='p-4 border-b border-gray-200'>
-                                <div className='bg-[#00a651] border text-xl text-white p-2 rounded-t-md'>
-                                    <h2>SEARCH WHAT YOU NEED HERE :-</h2>
-                                </div>
-                                <div className='bg-white border border-gray-200 border-t-0 p-3 rounded-b-md shadow-inner'>
-                                    <SearchBar folderId='' />
-                                </div>
-                            </div>
-                            <div className="flex-1 overflow-y-auto px-4 py-4 overflow-x-hidden">
-                                {children}
-                            </div>
-                        </main>
-
-                        {/* Right Sidebar */}
-                        <aside className="hidden lg:block w-full lg:w-[25%] bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                            <div className="h-full">
-                                <RightBar />
-                            </div>
-                        </aside>
+            {/* Breadcrumb bar — omitted on the homepage, where it says nothing. */}
+            {!isHome && (
+                <div className="border-b border-border bg-muted/40">
+                    <div className="mx-auto max-w-[1440px] px-4 py-2.5 sm:px-6">
+                        <Breadcrumbs />
                     </div>
                 </div>
+            )}
 
-                {/* Footer */}
-                <Footer />
-            </main>
+            <div className="mx-auto flex w-full max-w-[1440px] flex-1 gap-8 px-4 sm:px-6">
+                {/* Desktop rail. Fixed 260px, not 25% — the old 25/25 split left
+                    the content column at ~576px on any screen size. */}
+                <aside
+                    className="hidden w-[260px] shrink-0 lg:block"
+                    aria-label="Section navigation"
+                >
+                    <div className="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto py-6 pr-1">
+                        <NavTree />
+                    </div>
+                </aside>
 
-            {/* Mobile Bottom Navigation */}
-            <MobileBottomNav />
+                <main className="w-full min-w-0 max-w-[880px] flex-1 py-6">
+                    <SubscriptionBanner />
+                    {!isHome && (
+                        <div className={`mb-5 border-l-4 pl-4 ${trackBorder[track]}`}>
+                            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                                {titleForPath(pathname)}
+                            </h1>
+                        </div>
+                    )}
+                    {children}
+                </main>
+            </div>
+
+            <Footer />
+            <MobileBottomNav
+                onOpenNav={() => setNavOpen(true)}
+                onOpenSearch={() => setSearchOpen(true)}
+            />
+
+            <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+            <MobileNavSheet open={navOpen} onOpenChange={setNavOpen} />
         </div>
     );
 };
+
+/**
+ * The full navigation inventory on phones. LeftBar and RightBar were
+ * `hidden lg:block` with no mobile equivalent, so ~62 destinations were
+ * unreachable below 1024px.
+ */
+function MobileNavSheet({
+    open,
+    onOpenChange,
+}: {
+    open: boolean;
+    onOpenChange: (v: boolean) => void;
+}) {
+    return (
+        <Sheet open={open} onOpenChange={onOpenChange}>
+            <SheetContent side="left" className="w-[88vw] max-w-sm overflow-y-auto p-0">
+                <SheetHeader className="border-b border-border px-4 py-4 text-left">
+                    <SheetTitle>Browse resources</SheetTitle>
+                </SheetHeader>
+                <div className="px-2 py-2 pb-20">
+                    <NavTree onNavigate={() => onOpenChange(false)} />
+                </div>
+            </SheetContent>
+        </Sheet>
+    );
+}
 
 export default AppLayout;
