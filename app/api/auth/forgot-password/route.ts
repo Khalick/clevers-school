@@ -3,8 +3,23 @@ import { connectToDatabase } from "@/lib/mongodb"
 import crypto from "crypto"
 import { Resend } from "resend"
 
-// Initialize Resend with API key
-const resend = new Resend(process.env.RESEND_API_KEY)
+/**
+ * Resend is constructed lazily, inside the handler.
+ *
+ * At module scope, `new Resend(process.env.RESEND_API_KEY)` throws the moment
+ * the module is imported — and Next imports every route during "Collecting page
+ * data", so a missing key failed the entire production build rather than just
+ * this one endpoint. That is what broke the first deploy of this branch: the key
+ * is set for the Production environment but not for Preview.
+ *
+ * Now a missing key degrades to a clear 503 on this one route, and every other
+ * page still builds and ships.
+ */
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) return null
+  return new Resend(apiKey)
+}
 
 // Token expiration time (1 hour)
 const TOKEN_EXPIRATION = 60 * 60 * 1000
@@ -49,6 +64,15 @@ export async function POST(request: NextRequest) {
     // Create reset URL
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
     const resetUrl = `${baseUrl}/auth/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`
+
+    const resend = getResend()
+    if (!resend) {
+      console.error("RESEND_API_KEY is not configured; cannot send password-reset email")
+      return NextResponse.json(
+        { error: "Password reset email could not be sent. Please contact support." },
+        { status: 503 },
+      )
+    }
 
     // Send email with reset link
     const { data, error } = await resend.emails.send({
