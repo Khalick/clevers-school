@@ -154,7 +154,7 @@ export default function PaymentForm() {
                 onChange={handleChange}
                 required
                 readOnly
-                className="bg-gray-50"
+                className="bg-muted"
               />
               <p className="text-xs text-muted-foreground">Email is linked to your account and cannot be changed</p>
             </div>

@@ -64,7 +64,7 @@ export default function ForgotPassword() {
         {isSuccess ? (
           <CardContent className="space-y-4 text-center">
             <div className="flex justify-center">
-              <CheckCircle className="h-16 w-16 text-green-500" />
+              <CheckCircle className="h-16 w-16 text-success" />
             </div>
             <p>
               We&apos;ve sent a password reset link to <strong>{email}</strong>. Please check your email and follow the

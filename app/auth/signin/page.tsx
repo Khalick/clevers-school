@@ -73,7 +73,7 @@ export default function SignIn() {
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 text-red-500 text-sm rounded">
+              <div className="p-3 bg-destructive/10 text-destructive text-sm rounded">
                 {error === "CredentialsSignin" ? "Invalid email or password" : "An error occurred. Please try again."}
               </div>
             )}

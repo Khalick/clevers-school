@@ -10,6 +10,7 @@ import Breadcrumbs from './Breadcrumbs';
 import SearchDialog from './SearchDialog';
 import SubscriptionBanner from './SubscriptionBanner';
 import { titleForPath, trackForPath } from '@/lib/navigation';
+import { routeExists } from '@/lib/routes.generated';
 import {
     Sheet,
     SheetContent,
@@ -80,9 +81,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
     const track = trackForPath(pathname);
     const isHome = pathname === '/';
+    // A URL with no page behind it must not get a title invented from its own
+    // path — /this-does-not-exist would render "This Does Not Exist" as an <h1>
+    // above the 404 message, implying the page is real.
+    const isKnownRoute = routeExists(pathname) || pathname.startsWith('/document');
     // /document/[name] renders its own <h1> from the real filename; the
     // route-derived title there would just be a URL-encoded Drive file id.
-    const providesOwnTitle = isHome || pathname.startsWith('/document');
+    const providesOwnTitle = isHome || pathname.startsWith('/document') || !isKnownRoute;
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
@@ -92,7 +97,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             />
 
             {/* Breadcrumb bar — omitted on the homepage, where it says nothing. */}
-            {!isHome && (
+            {!isHome && isKnownRoute && (
                 <div className="border-b border-border bg-muted/40">
                     <div className="mx-auto max-w-[1440px] px-4 py-2.5 sm:px-6">
                         <Breadcrumbs />

@@ -55,7 +55,7 @@ export default function SiteHeader({ onOpenNav, onOpenSearch }: SiteHeaderProps)
                 </Button>
 
                 <Link href="/" className="flex shrink-0 items-center" aria-label="Clevers Schools — home">
-                    <Logo className="h-9 w-24 sm:h-10 sm:w-28" />
+                    <Logo className="h-9 w-auto sm:h-10" />
                 </Link>
 
                 {/* Nine items including "National School Exams" are wide. Below

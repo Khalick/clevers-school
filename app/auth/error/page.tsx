@@ -20,20 +20,20 @@ export default function AuthError() {
     "invalid-password": {
       title: "Incorrect Password",
       description: "The password you entered is incorrect. Please try again or reset your password.",
-      icon: <KeyRound className="h-12 w-12 text-amber-500" />,
+      icon: <KeyRound className="h-12 w-12 text-warning" />,
       action: { text: "Forgot Password?", href: "/auth/forgot-password" },
     },
     "user-not-found": {
       title: "Account Not Found",
       description:
         "We couldn't find an account with that email address. Please check your email or create a new account.",
-      icon: <UserX className="h-12 w-12 text-amber-500" />,
+      icon: <UserX className="h-12 w-12 text-warning" />,
       action: { text: "Create Account", href: "/auth/signup" },
     },
     "missing-credentials": {
       title: "Missing Information",
       description: "Please provide both email and password to sign in.",
-      icon: <AlertTriangle className="h-12 w-12 text-amber-500" />,
+      icon: <AlertTriangle className="h-12 w-12 text-warning" />,
       action: { text: "Try Again", href: "/auth/signin" },
     },
     "email-not-verified": {
@@ -45,13 +45,13 @@ export default function AuthError() {
     "authentication-error": {
       title: "Authentication Error",
       description: "There was a problem with your authentication. Please try again later.",
-      icon: <XCircle className="h-12 w-12 text-red-500" />,
+      icon: <XCircle className="h-12 w-12 text-destructive" />,
       action: { text: "Try Again", href: "/auth/signin" },
     },
     default: {
       title: "Authentication Error",
       description: "There was a problem signing you in. Please try again later.",
-      icon: <HelpCircle className="h-12 w-12 text-red-500" />,
+      icon: <HelpCircle className="h-12 w-12 text-destructive" />,
       action: { text: "Return to Sign In", href: "/auth/signin" },
     },
   }
@@ -70,7 +70,7 @@ export default function AuthError() {
         <CardContent>
           {error === "invalid-password" && (
             <div className="space-y-4">
-              <div className="bg-amber-50 p-3 rounded-md text-amber-700 text-sm">
+              <div className="bg-warning/10 p-3 rounded-md text-warning text-sm">
                 <p className="font-medium">Possible reasons:</p>
                 <ul className="list-disc pl-5 mt-1 space-y-1">
                   <li>You may have typed your password incorrectly</li>
@@ -93,7 +93,7 @@ export default function AuthError() {
 
           {error === "user-not-found" && (
             <div className="space-y-4">
-              <div className="bg-amber-50 p-3 rounded-md text-amber-700 text-sm">
+              <div className="bg-warning/10 p-3 rounded-md text-warning text-sm">
                 <p>If you're sure you have an account, you might have:</p>
                 <ul className="list-disc pl-5 mt-1 space-y-1">
                   <li>Used a different email address</li>
@@ -116,7 +116,7 @@ export default function AuthError() {
 
           {error === "email-not-verified" && (
             <div className="space-y-4">
-              <div className="bg-blue-50 p-3 rounded-md text-blue-700 text-sm">
+              <div className="bg-track-kcse/10 p-3 rounded-md text-track-kcse text-sm">
                 <p className="font-medium">What to do next:</p>
                 <ul className="list-disc pl-5 mt-1 space-y-1">
                   <li>Check your email inbox for a verification link</li>

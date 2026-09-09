@@ -1,17 +1,31 @@
 
 import { Analytics } from "@vercel/analytics/react";
+import type { Viewport } from 'next';
 import { metadata } from '@/lib/metadata';
 import { SITE_URL } from '@/lib/constants';
-import { geistSans, geistMono } from './components/Fonts';
+import { geistSans } from './components/Fonts';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import MetaTags from './components/MetaTags';
 import StructuredData from './components/StructuredData';
 import AppLayout from "./components/AppLayout";
 import Footer from "./components/Footer";
 import AuthProvider from "@/providers";
+import PaymentCheck from '@/app/components/PaymentCheck';
+import { Toaster } from '@/components/ui/toaster';
 import "./globals.css";
 export { metadata };
-import PaymentCheck from '@/app/components/PaymentCheck';
+
+/** Tints the Android browser chrome with the brand green, and pins the zoom
+ *  behaviour. Next warns about themeColor inside `metadata`, so it lives here. */
+export const viewport: Viewport = {
+    themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#008a44' },
+        { media: '(prefers-color-scheme: dark)', color: '#0b1220' },
+    ],
+    width: 'device-width',
+    initialScale: 1,
+    // Not maximumScale/userScalable — capping zoom is an accessibility failure.
+};
 
 
 
@@ -83,50 +97,18 @@ const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "@id": `${SITE_URL}/#breadcrumb`,
-    itemListElement: [{
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: SITE_URL
-    },
-    {
-        "@type": "ListItem",
-        position: 2,
-        name: "KCSE",
-        item: `${SITE_URL}/kcse`
-    },
-    {
-        "@type": "ListItem",
-        position: 3,
-        name: "IGCSE",
-        item: `${SITE_URL}/igcse`
-    },
-    {
-        "@type": "ListItem",
-        position: 4,
-        name: "AS/A Level",
-        item: `${SITE_URL}/igcse/cambridge/A-Level`
-    },
-    {
-        "@type": "ListItem",
-        position: 5,
-        name: "Junior Secondary",
-        item: `${SITE_URL}/junior`
-    },
-    {
-        "@type": "ListItem",
-        position: 5,
-        name: "senior Secondary",
-        item: `${SITE_URL}/senior`
-    },
-    {
-        "@type": "ListItem",
-        position: 5,
-        name: "elementary school",
-        item: `${SITE_URL}/elementary`
-    }
-],
-   
+    // Previously advertised /junior, /senior and /elementary — none of which
+    // are real routes. These are the actual top-level sections.
+    itemListElement: [
+        { name: "Home", item: SITE_URL },
+        { name: "KCSE Past Papers", item: `${SITE_URL}/kcse` },
+        { name: "County Mocks", item: `${SITE_URL}/mocks` },
+        { name: "National School Exams", item: `${SITE_URL}/nationals` },
+        { name: "Secondary", item: `${SITE_URL}/secondary` },
+        { name: "Primary & CBC", item: `${SITE_URL}/grade1to6Resources` },
+        { name: "IGCSE", item: `${SITE_URL}/igcse` },
+        { name: "College", item: `${SITE_URL}/college` },
+    ].map((entry, i) => ({ "@type": "ListItem", position: i + 1, ...entry })),
 };
 
 
@@ -162,10 +144,13 @@ const paid = true;
           <StructuredData />
         </head>
         <body 
-          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full bg-background text-foreground`}
+          className={`${geistSans.variable} antialiased min-h-full bg-background text-foreground`}
         >
          
           <AppLayout>{children}</AppLayout>
+          {/* Without this, every toast() call in the app is silent — sign-in
+              errors, download confirmations and payment feedback included. */}
+          <Toaster />
           <Analytics />
           
           <SpeedInsights />

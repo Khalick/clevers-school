@@ -1,16 +1,22 @@
 import Image from 'next/image';
 
-export const Logo = ({ className = '' }) => {
-  return (
-    <div className={`relative w-32 h-12 ${className}`}>
-      <Image
-        src="/image.png" // Update with your logo path
-        alt="Clevers Schools Logo"
-        fill
-        sizes="(max-width: 768px) 100vw, 128px"
+/**
+ * Brand mark.
+ *
+ * Was a 500x500 341 KB PNG rendered through `fill` with
+ * `sizes="(max-width: 768px) 100vw, 128px"` — which told phones to request a
+ * full-viewport-width image for a mark displayed at ~112px. The source is now
+ * 256x256 / 83 KB, and explicit intrinsic dimensions let Next serve a correctly
+ * sized WebP instead.
+ */
+export const Logo = ({ className = '' }) => (
+    <Image
+        src="/image.png"
+        alt="Clevers Schools"
+        width={112}
+        height={48}
+        sizes="112px"
         priority
-        className="object-contain"
-      />
-    </div>
-  );
-};
+        className={`h-10 w-auto object-contain ${className}`}
+    />
+);

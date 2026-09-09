@@ -60,9 +60,9 @@ export default function PaymentCallback() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6">
-          {status === "loading" && <Clock className="w-16 h-16 text-yellow-500 mb-4" />}
-          {status === "success" && <CheckCircle className="w-16 h-16 text-green-500 mb-4" />}
-          {status === "failed" && <XCircle className="w-16 h-16 text-red-500 mb-4" />}
+          {status === "loading" && <Clock className="w-16 h-16 text-warning mb-4" />}
+          {status === "success" && <CheckCircle className="w-16 h-16 text-success mb-4" />}
+          {status === "failed" && <XCircle className="w-16 h-16 text-destructive mb-4" />}
 
           <p className="text-center">{message}</p>
 

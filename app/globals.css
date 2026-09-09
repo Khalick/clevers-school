@@ -51,6 +51,13 @@ body {
     --accent-foreground: var(--brand-700);
     --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
+    /* Status colours. Only --destructive existed, so success and warning were
+     * hardcoded as green-600 / amber-500 across the auth and checkout pages —
+     * the same states rendered in different hues on different screens. */
+    --success: 149 75% 28%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 92% 40%;
+    --warning-foreground: 0 0% 100%;
     --border: 214 20% 90%;
     --input: 214 20% 90%;
     --ring: var(--brand-500);
@@ -102,6 +109,10 @@ body {
     --accent-foreground: var(--brand-700);
     --destructive: 0 62% 52%;
     --destructive-foreground: 0 0% 100%;
+    --success: 149 60% 50%;
+    --success-foreground: 150 90% 8%;
+    --warning: 38 85% 58%;
+    --warning-foreground: 30 60% 10%;
     --border: 220 15% 20%;
     --input: 220 15% 20%;
     --ring: var(--brand-500);

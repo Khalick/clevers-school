@@ -222,7 +222,7 @@ const SubscriptionPageContent: React.FC = () => {
     return (
       <div className="space-y-6">
         <div className="text-center space-y-2">
-          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 px-3 py-1">
+          <Badge variant="outline" className="bg-success/10 text-success border-success/30 px-3 py-1">
             <Check className="h-4 w-4 mr-1" />
             Active Subscription
           </Badge>
@@ -237,7 +237,7 @@ const SubscriptionPageContent: React.FC = () => {
         <div className="space-y-4">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Subscription Status</span>
-            <span className="font-medium text-green-600">Active</span>
+            <span className="font-medium text-success">Active</span>
           </div>
 
           <div className="space-y-2">
@@ -257,7 +257,7 @@ const SubscriptionPageContent: React.FC = () => {
 
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Reference</span>
-            <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">
+            <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
               {subscriptionData.reference}
             </span>
           </div>
@@ -278,7 +278,7 @@ const SubscriptionPageContent: React.FC = () => {
           <div className="relative mx-auto">
             <Smartphone className="h-16 w-16 mx-auto text-primary animate-pulse" />
             <div className="absolute top-0 right-1/3">
-              <Loader2 className="h-6 w-6 animate-spin text-green-600" />
+              <Loader2 className="h-6 w-6 animate-spin text-success" />
             </div>
           </div>
           <div>
@@ -305,11 +305,11 @@ const SubscriptionPageContent: React.FC = () => {
   const renderPaymentSuccess = () => {
     return (
       <div className="text-center space-y-4 py-6">
-        <div className="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-green-100">
-          <Check className="h-8 w-8 text-green-600" />
+        <div className="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-success/15">
+          <Check className="h-8 w-8 text-success" />
         </div>
         <div>
-          <p className="text-lg font-medium text-green-600">Payment Successful!</p>
+          <p className="text-lg font-medium text-success">Payment Successful!</p>
           <p className="text-muted-foreground">Your subscription has been activated.</p>
           <Button className="mt-4" onClick={() => router.push(returnUrl)}>
             Go to Dashboard
@@ -329,9 +329,9 @@ const SubscriptionPageContent: React.FC = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+          <div className="bg-muted rounded-lg p-4 space-y-3">
             <h4 className="font-medium flex items-center gap-2">
-              <Check className="h-5 w-5 text-green-600" />
+              <Check className="h-5 w-5 text-success" />
               <span>Premium Benefits</span>
             </h4>
             <ul className="space-y-3">
@@ -369,7 +369,7 @@ const SubscriptionPageContent: React.FC = () => {
                 />
               </div>
               <Button
-                className="w-full gap-2 bg-green-600 hover:bg-green-700"
+                className="w-full gap-2 bg-success hover:bg-green-700"
                 onClick={handlePayment}
                 disabled={isProcessing || polling || !phoneNumber}
               >
@@ -391,7 +391,7 @@ const SubscriptionPageContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-muted py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
         <Card className="shadow-lg border-0">
           <CardHeader className="text-center bg-gradient-to-r from-primary/10 to-primary/5 border-b">
@@ -410,7 +410,7 @@ const SubscriptionPageContent: React.FC = () => {
           </CardContent>
 
           {!subscriptionData && !isProcessing && !paymentCompleted && !polling && (
-            <CardFooter className="bg-gray-50 text-center text-xs text-muted-foreground pt-4 pb-6">
+            <CardFooter className="bg-muted text-center text-xs text-muted-foreground pt-4 pb-6">
               <p>By subscribing, you agree to our Terms of Service and Privacy Policy.</p>
             </CardFooter>
           )}

@@ -130,7 +130,7 @@ export default function ResetPasswordPage() {
         <Card className="w-full max-w-md">
           <CardHeader>
             <div className="flex justify-center mb-4">
-              <CheckCircle className="h-12 w-12 text-green-500" />
+              <CheckCircle className="h-12 w-12 text-success" />
             </div>
             <CardTitle className="text-2xl text-center">Password Reset Successful</CardTitle>
             <CardDescription className="text-center">
@@ -156,7 +156,7 @@ export default function ResetPasswordPage() {
         </CardHeader>
         <CardContent>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-4">
+            <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-md mb-4">
               <div className="flex">
                 <AlertCircle className="h-5 w-5 mr-2" />
                 <span>{error}</span>
