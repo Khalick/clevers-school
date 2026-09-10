@@ -34,6 +34,15 @@ export async function GET(request: Request) {
             q: `'${folderId}' in parents and trashed = false`,
             orderBy: 'name',
             pageSize: 1000,
+            // Without these two, a service account gets an EMPTY result for
+            // folders it can otherwise see and open — no error, just zero
+            // files — whenever the folder sits inside a structure Drive treats
+            // as a shared/team context rather than a plain personal folder.
+            // That is exactly what every folder in this project's Drive does:
+            // files.get on the folder succeeds, but files.list on its contents
+            // silently returns nothing without these flags.
+            supportsAllDrives: true,
+            includeItemsFromAllDrives: true,
         });
 
         return NextResponse.json({ files: response.data.files });
