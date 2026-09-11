@@ -2,11 +2,26 @@ import { MongoClient, Db } from 'mongodb';
 
 const DATABASE_NAME = process.env.MONGODB_DB || 'clevers_schools';
 
+/**
+ * Tuned for serverless (Vercel), where every cold start pays the full
+ * connection cost against a wall-clock timeout.
+ *
+ * minPoolSize was 5, which forced the driver to complete FIVE TLS handshakes
+ * to Atlas before the pool was usable. Against a Dublin cluster from a US
+ * function, on a cold start, that routinely exceeded the old 10s
+ * connectTimeoutMS and surfaced as:
+ *   "Socket 'secureConnect' timed out after 10002ms"
+ * A serverless function should open connections lazily — one is enough.
+ */
 const options = {
     maxPoolSize: 10,
-    minPoolSize: 5,
-    connectTimeoutMS: 10000,
+    minPoolSize: 0,
+    connectTimeoutMS: 30000,
     socketTimeoutMS: 45000,
+    // Without this the driver uses its own 30s default for picking a server,
+    // independent of connectTimeoutMS; setting it explicitly keeps the two
+    // budgets aligned and makes failures predictable rather than confusing.
+    serverSelectionTimeoutMS: 30000,
 };
 
 let client: MongoClient | null = null;
