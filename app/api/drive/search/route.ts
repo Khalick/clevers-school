@@ -1,4 +1,5 @@
 import { google } from 'googleapis';
+import { getGoogleCredentials } from '@/lib/googleAuth';
 import { NextResponse } from 'next/server';
 
 interface SearchResult {
@@ -40,9 +41,8 @@ interface SearchOptions {
 
 const auth = new google.auth.GoogleAuth({
   credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    client_id: process.env.GOOGLE_CLIENT_ID,
+    client_email: getGoogleCredentials().clientEmail,
+    private_key: getGoogleCredentials().privateKey,
   },
   scopes: [
     'https://www.googleapis.com/auth/drive.readonly',

@@ -11,11 +11,15 @@ import { NextResponse } from 'next/server';
  * Delete this route once the credential rollout is confirmed working.
  */
 export async function GET() {
-    const email = process.env.GOOGLE_CLIENT_EMAIL ?? null;
+    // Deliberately reads the RAW values, untrimmed, so this route can still
+    // reveal stray whitespace even after the app itself started trimming it.
+    const rawEmail = process.env.GOOGLE_CLIENT_EMAIL ?? null;
     const rawKey = process.env.GOOGLE_PRIVATE_KEY ?? null;
+    const email = rawEmail?.trim() ?? null;
 
     const result: Record<string, unknown> = {
         GOOGLE_CLIENT_EMAIL: email,
+        raw_had_whitespace: rawEmail !== email,
         GOOGLE_PRIVATE_KEY_present: Boolean(rawKey),
         GOOGLE_PRIVATE_KEY_length: rawKey?.length ?? 0,
         expected_email: 'clevers-drive-reader@clevers-school-resources.iam.gserviceaccount.com',

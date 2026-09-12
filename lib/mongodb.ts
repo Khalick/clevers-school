@@ -1,6 +1,8 @@
 import { MongoClient, Db } from 'mongodb';
 
-const DATABASE_NAME = process.env.MONGODB_DB || 'clevers_schools';
+// Trimmed: a pasted trailing newline here silently creates a DIFFERENT
+// database ("clevers_schools\n"), which looks like vanished data.
+const DATABASE_NAME = process.env.MONGODB_DB?.trim() || 'clevers_schools';
 
 /**
  * Tuned for serverless (Vercel), where every cold start pays the full
@@ -35,7 +37,7 @@ declare global {
 // Initialize client lazily - only when actually needed
 function getClientPromise(): Promise<MongoClient> {
     // Read env var at call time, not module load time (Vercel may inject after module load)
-    const uri = process.env.MONGODB_URI || '';
+    const uri = process.env.MONGODB_URI?.trim() || '';
 
     if (!uri) {
         return Promise.reject(new Error('Missing MONGODB_URI environment variable'));

@@ -1,21 +1,17 @@
 // app/api/drive/files/route.ts
-import { google } from 'googleapis';
 import { NextResponse } from 'next/server';
+
+import { getDriveClient } from '@/lib/googleAuth';
 
 export async function GET(request: Request) {
     try {
-        const replacedKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-
-        const auth = new google.auth.GoogleAuth({
-            credentials: {
-                client_email: process.env.GOOGLE_CLIENT_EMAIL,
-                private_key: replacedKey,
-                client_id: process.env.GOOGLE_CLIENT_ID,
-            },
-            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-        });
-
-        const drive = google.drive({ version: 'v3', auth });
+        const drive = getDriveClient();
+        if (!drive) {
+            return NextResponse.json(
+                { error: 'Google Drive credentials are not configured' },
+                { status: 503 }
+            );
+        }
 
         const { searchParams } = new URL(request.url);
         const folderId = searchParams.get('folderId');

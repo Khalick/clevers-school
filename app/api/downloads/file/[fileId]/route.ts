@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
+import { getGoogleCredentials } from '@/lib/googleAuth';
 
 import { authOptions } from '@/auth';
 import { getUserSubscription } from '@/lib/subscription';
@@ -12,8 +13,8 @@ function getDriveClient() {
     if (!driveClient) {
         const auth = new google.auth.GoogleAuth({
             credentials: {
-                client_email: process.env.GOOGLE_CLIENT_EMAIL,
-                private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+                client_email: getGoogleCredentials().clientEmail,
+                private_key: getGoogleCredentials().privateKey,
             },
             scopes: ['https://www.googleapis.com/auth/drive.readonly'],
         });
