@@ -2,14 +2,14 @@ import { type NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/auth"
 import { connectToDatabase } from "@/lib/mongodb"
+import { isAdminEmail } from '@/lib/admin'
 
-const ADMIN_EMAILS = ["peteragak61@gmail.com"]
 
 export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions)
 
-        if (!session?.user?.email || !ADMIN_EMAILS.includes(session.user.email)) {
+        if (!session?.user?.email || !isAdminEmail(session.user.email)) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
         }
 

@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getToken } from "next-auth/jwt"
+import { isAdminEmail } from '@/lib/admin'
 
 // Routes that require authentication
 const protectedRoutes = ["/subscribe", "/subscription", "/profile"]
@@ -7,7 +8,6 @@ const protectedRoutes = ["/subscribe", "/subscription", "/profile"]
 // Routes that should redirect to dashboard if user is authenticated
 const authRoutes = ["/auth/signin", "/auth/signup"]
 
-const ADMIN_EMAILS = ["peteragak61@gmail.com"]
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url)
       }
 
-      if (!token.email || !ADMIN_EMAILS.includes(token.email)) {
+      if (!isAdminEmail(token.email)) {
         return NextResponse.redirect(new URL("/", request.url))
       }
     }
