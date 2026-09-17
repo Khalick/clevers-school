@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
 import crypto from "crypto"
 import { Resend } from "resend"
+import { SITE_URL } from "@/lib/constants"
 
 /**
  * Resend is constructed lazily, inside the handler.
@@ -81,8 +82,8 @@ export async function POST(request: NextRequest) {
       subject: "Reset Your Password",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <a href="https://schoolresources.clevers.co.ke">
-          <img src="https://schoolresources.clevers.co.ke/logo.png" alt="Clevers Schools Resources" style="width: 200px; margin: 20px 0;">
+        <a href="${SITE_URL}">
+          <img src="${SITE_URL}/image.png" alt="Clevers Schools Resources" style="width: 200px; margin: 20px 0;">
           <span style="color: #00a651; font-size: 24px; font-weight: bold;">Clevers Schools Resources</span>
         </a>
           <h2>Reset Your Password</h2>

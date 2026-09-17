@@ -8,9 +8,11 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
+      // The live domain. The previous entry pointed at a hostname that does not
+      // resolve, so any remote <Image> from it would have failed to optimise.
       {
         protocol: 'https',
-        hostname: 'schoolresources.clevers.co.ke',
+        hostname: 'cleversschoolsresources.clevers.ac.ke',
       },
     ],
   },

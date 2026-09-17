@@ -22,7 +22,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    nocache: true,
     googleBot: {
       index: true,
       follow: true,
@@ -67,8 +66,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
     languages: {
-      'en-US': SITE_URL,
-        'en-GB': SITE_URL,
+      'en-KE': SITE_URL,
     },
   },
   category: 'education',

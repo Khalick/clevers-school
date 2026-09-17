@@ -2,13 +2,17 @@ import { type NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { connectToDatabase } from "@/lib/mongodb"
 import { authOptions } from "@/auth"
+import { isAdminEmail } from "@/lib/admin"
 
 export async function GET(request: NextRequest) {
   try {
     // Get the current user session
     const session = await getServerSession(authOptions)
 
-    if (!session?.user?.email?.includes("admin")) {
+    // Was `email.includes("admin")` — a substring match, so any account whose
+    // address merely contained "admin" (admin@gmail.com, notadmin@x.com) got
+    // in. Now uses the same allowlist as every other admin surface.
+    if (!session?.user?.email || !isAdminEmail(session.user.email)) {
       return NextResponse.json(
         {
           success: false,

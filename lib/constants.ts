@@ -1,4 +1,8 @@
-export const SITE_URL = 'https://resources.clevers.co.ke/';
+// No trailing slash: call sites build URLs as `${SITE_URL}/path`, and a
+// trailing slash here produced a double slash in every OG image and
+// JSON-LD url. The previous value also pointed at a domain that does not
+// resolve, so search engines were told the whole site lived nowhere.
+export const SITE_URL = 'https://cleversschoolsresources.clevers.ac.ke';
 export const SITE_NAME = 'Clevers Schools Resources';
 export const SITE_DESCRIPTION = 'Access comprehensive educational materials including IGCSE past papers, Cambridge resources, Edexcel materials, and expert-curated lesson plans. Your trusted source for high-quality teaching and learning resources.';
 

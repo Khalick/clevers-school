@@ -7,4 +7,4 @@ Disallow: /monitoring
 Crawl-delay: 1
 
 # Sitemap
-Sitemap: https://resources.clevers.co.ke/sitemap.xml
+Sitemap: https://cleversschoolsresources.clevers.ac.ke/sitemap.xml
